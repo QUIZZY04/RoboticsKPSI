@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics | Krishna Public School International</title>
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #ffcc00;
+            --light-bg: #f4f7f9;
+            --dark-text: #333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), 
+                        url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2070') no-repeat center center/cover;
+            color: var(--white);
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 800px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            border-left: 5px solid var(--accent-gold);
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Curriculum Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: var(--white);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Cards for Features */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+
+        /* Call to Action */
+        .cta {
+            background: var(--accent-gold);
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .btn {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: #222;
+            color: #ccc;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            nav ul { display: none; } /* Mobile menu simplified for demo */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">KPSI Naya Raipur</div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Lab</a></li>
+            <li><a href="#">Curriculum</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Robotics & AI Excellence</h1>
+        <p>"The best way to predict the future is to invent it."</p>
+    </header>
+
+    <div class="container">
+        
+        <section id="about">
+            <h2>About the Robotics Lab</h2>
+            <p>Our state-of-the-art Robotics & AI Excellence Centre provides students with a hands-on learning environment. We bridge the gap between theoretical physics, mathematics, and real-world engineering through advanced toolsets including LEGO® Mindstorms, Arduino, and 3D Printing stations.</p>
+        </section>
+
+        <section id="curriculum">
+            <h2>Our Robotics Curriculum</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>Focus Areas</th>
+                        <th>Key Learning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Primary (1-5)</strong></td>
+                        <td>Mechanics</td>
+                        <td>Simple machines, gears, and logic-based block coding.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Middle (6-8)</strong></td>
+                        <td>Intermediate Robotics</td>
+                        <td>Autonomous robots, sensor integration, and Python basics.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Secondary (9-12)</strong></td>
+                        <td>Advanced Engineering</td>
+                        <td>Industrial automation, Artificial Intelligence, and IoT.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="why-robotics">
+            <h2>Why Choose Robotics at KPSI?</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Critical Thinking</h3>
+                    <p>Encouraging students to troubleshoot and solve complex engineering problems independently.</p>
+                </div>
+                <div class="card">
+                    <h3>Global Exposure</h3>
+                    <p>Participation in events like the World Robot Olympiad (WRO) and FIRST Lego League (FLL).</p>
+                </div>
+                <div class="card">
+                    <h3>Career Readiness</h3>
+                    <p>Laying the foundation for future careers in Mechatronics, Software Engineering, and AI.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to Build the Future?</h2>
+            <p>Enroll your child in the Robotics Club today and transform them into technology creators.</p>
+            <a href="#" class="btn">Contact Coordinator</a>
+            <a href="#" class="btn" style="background:#444;">Download Brochure</a>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Krishna Public School International</strong></p>
+        <p>Inspiring Excellence. Every Day.</p>
+        <p>&copy; 2026 KPSI Robotics Lab. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
