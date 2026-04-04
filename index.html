@@ -329,6 +329,86 @@
                 overflow-x: auto;
             }
         }
+
+        /* COLORFUL LOGIN MODAL */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 2000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: linear-gradient(135deg, var(--primary-blue), #00509e, #003366);
+            color: white;
+            margin: 10% auto; 
+            padding: 35px 30px; 
+            border-radius: 15px;
+            width: 90%; 
+            max-width: 350px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            position: relative;
+            text-align: center;
+            border: 3px solid var(--accent-gold);
+            animation: modalFadeIn 0.4s ease-out;
+        }
+        @keyframes modalFadeIn {
+            from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .close-btn {
+            color: var(--accent-gold);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover { color: white; transform: scale(1.1); }
+        .modal-content h2 {
+            color: var(--accent-gold);
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .login-submit-btn {
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+            width: 100%;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            border: none;
+            font-weight: bold;
+        }
+        .login-submit-btn:hover {
+            background: white;
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255,204,0,0.4);
+        }
+        #login-error {
+            color: #ffb3b3;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
     </style>
 </head>
 
@@ -523,6 +603,20 @@
     <p>&copy; 2026 KPSI Robotics Lab</p>
 </footer>
 
+<!-- Colorful Login Modal -->
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+        <h2>Admin Access</h2>
+        <div class="modal-body">
+            <input type="email" id="admin-email" placeholder="Email Address">
+            <input type="password" id="admin-password" placeholder="Password">
+            <button class="btn login-submit-btn" onclick="performLogin()">Login</button>
+            <div id="login-error"></div>
+        </div>
+    </div>
+</div>
+
 <!-- Firebase SDKs -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -611,17 +705,29 @@
         updateNav(user);
     });
 
-    window.adminLogin = async function() {
-        const email = prompt("Enter Admin Email:");
-        const password = prompt("Enter Admin Password:");
+    window.adminLogin = function() {
+        document.getElementById('login-modal').style.display = 'block';
+        document.getElementById('login-error').innerText = ''; // Clear errors
+    }
+
+    window.closeLoginModal = function() {
+        document.getElementById('login-modal').style.display = 'none';
+    }
+
+    window.performLogin = async function() {
+        const email = document.getElementById('admin-email').value;
+        const password = document.getElementById('admin-password').value;
+        const errorDiv = document.getElementById('login-error');
+        
         if (email && password) {
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                alert("Logged in successfully!");
                 window.location.href = 'admin.html';
             } catch (error) {
-                alert("Login failed: " + error.message);
+                errorDiv.innerText = "Login failed: " + error.message;
             }
+        } else {
+            errorDiv.innerText = "Please enter both email and password.";
         }
     }
 </script>
