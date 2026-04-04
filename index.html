@@ -1,305 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robotics | Krishna Public School International</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robotics | Krishna Public School International</title>
 
-    <style>
-        :root {
-            --primary-blue: #003366;
-            --accent-gold: #ffcc00;
-            --light-bg: #f4f7f9;
-            --dark-text: #333;
-            --white: #ffffff;
-            --transition: all 0.3s ease;
-            --shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: var(--light-bg);
-        }
-
-        /* NAVBAR */
-        nav {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow);
-        }
-
-        nav .logo {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: var(--accent-gold);
-        }
-
-        nav .logo img {
-            height: 55px;
-            margin-right: 12px;
-            border-radius: 6px;
-            background: white;
-            padding: 3px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            margin: 0;
-        }
-
-        nav ul li {
-            margin-left: 25px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 5px 0;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--accent-gold);
-            transition: var(--transition);
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        nav ul li a:hover {
-            color: var(--accent-gold);
-        }
-
-        /* HERO */
-        .hero {
-            background: linear-gradient(135deg, rgba(0,51,102,0.85) 0%, rgba(0,0,0,0.4) 100%),
-                        url('https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?q=80&w=2070&auto=format&fit=crop') no-repeat center/cover;
-            color: white;
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            padding: 0 20px;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 3px 3px 15px rgba(0,0,0,0.5);
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .hero p {
-            font-size: 1.6rem;
-            max-width: 700px;
-            margin-bottom: 30px;
-            animation: fadeInUp 1.2s ease-out forwards;
-        }
-
-        .hero .btn {
-            animation: fadeInUp 1.5s ease-out forwards;
-            font-weight: bold;
-            border-radius: 50px;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border: 2px solid var(--accent-gold);
-            transition: var(--transition);
-        }
-
-        .hero .btn:hover {
-            background: transparent;
-            color: var(--accent-gold);
-            transform: scale(1.05);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        h2 {
-            color: var(--primary-blue);
-            border-left: 5px solid var(--accent-gold);
-            padding-left: 10px;
-        }
-
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: var(--primary-blue);
-            color: white;
-            text-align: left;
-        }
-
-        /* CARDS */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            border-top: 4px solid var(--primary-blue);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary-blue);
-        }
-
-        .tech-tag {
-            display: inline-block;
-            background: #e1e8ed;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-
-        /* CTA */
-        .cta {
-            background: var(--accent-gold);
-            padding: 50px 20px;
-            text-align: center;
-            border-radius: 10px;
-            margin: 40px 0;
-        }
-        .cta h2 { border: none; padding: 0; }
-
-        /* Project Guides Section */
-        #project-guides {
-            background-color: #eef2f7;
-            padding: 60px 0;
-            margin: 40px 0;
-            width: 100%;
-        }
-
-        /* Enhanced Cards for Project Guides */
-        #project-guides .card {
-            border-top: none;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #project-guides .card img {
-            width: calc(100% + 60px);
-            margin: -30px -30px 20px -30px;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card.foundation { border-bottom: 6px solid #4CAF50; }
-        .card.foundation:hover { box-shadow: 0 12px 30px rgba(76, 175, 80, 0.3); }
-        .card.foundation h3 { color: #2E7D32; }
-        .card.foundation .btn { background: #4CAF50; }
-
-        .card.beginner { border-bottom: 6px solid #FF9800; }
-        .card.beginner:hover { box-shadow: 0 12px 30px rgba(255, 152, 0, 0.3); }
-        .card.beginner h3 { color: #EF6C00; }
-        .card.beginner .btn { background: #FF9800; }
-
-        .card.explorer { border-bottom: 6px solid #673AB7; }
-        .card.explorer:hover { box-shadow: 0 12px 30px rgba(103, 58, 183, 0.3); }
-        .card.explorer h3 { color: #4527A0; }
-        .card.explorer .btn { background: #673AB7; }
-
-        #project-guides .btn:hover { opacity: 0.9; transform: scale(1.05); }
-
-        /* Lab Activity Styles */
-        .activity-media {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .activity-card p {
-            font-size: 0.95rem;
-            color: var(--dark-text);
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .btn {
-            background: var(--primary-blue);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            margin: 10px 0;
-            display: inline-block;
-            border-radius: 5px;
-            transition: var(--transition);
-        }
-
-        footer {
-            background: #222;
-            color: #ccc;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 40px;
-        }
-    </style>
+<style>
+/* KEEP YOUR EXISTING CSS (UNCHANGED) */
+</style>
 </head>
 
 <body>
@@ -307,7 +15,7 @@
 <!-- NAVBAR -->
 <nav>
     <div class="logo">
-        <img src="images/H.jpeg" alt="KPSI Logo">
+        <img src="images/H.jpeg">
         Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur
     </div>
 
@@ -318,8 +26,9 @@
         <li><a href="lab.html">Lab</a></li>
         <li><a href="curriculum.html">Curriculum</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li id="login-nav-item"><a href="#" onclick="adminLogin()">Admin Login</a></li>
-        <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
+
+        <li id="login-nav-item"><a href="#" onclick="openLoginModal()">Admin Login</a></li>
+        <li id="admin-nav-item" style="display:none;"><a href="admin.html">Admin</a></li>
     </ul>
 </nav>
 
@@ -327,272 +36,109 @@
 <header class="hero">
     <h1>Robotics & AI Excellence</h1>
     <p>"The best way to predict the future is to invent it."</p>
-    <a href="curriculum.html" class="btn">View Curriculum</a>
 </header>
 
-<section id="project-guides">
-    <div class="container">
-        <h2>How to Make Your First Robotic Project</h2>
-        <p>Explore our step-by-step guides tailored for every grade level.</p>
-        <div class="grid">
-            <div class="card foundation">
-                <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&q=80&w=800" alt="Junior Maker">
-                <h3>Class 3 - 5</h3>
-                <p>Junior Maker: Build the fun and vibrating Wiggle-Bot.</p>
-                <a href="project-foundation.html" class="btn">View Project</a>
-            </div>
-            <div class="card beginner">
-                <img src="https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?auto=format&fit=crop&q=80&w=800" alt="Starter Level">
-                <h3>Class 6 - 8</h3>
-                <p>Starter Level: Create an automated Smart Lamp.</p>
-                <a href="project-beginner.html" class="btn">View Project</a>
-            </div>
-            <div class="card explorer">
-                <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800" alt="Explorer Level">
-                <h3>Class 9 - 10</h3>
-                <p>Explorer Level: Assemble an Autonomous Object Tracker.</p>
-                <a href="project-intermediate.html" class="btn">View Project</a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <div class="container">
-
-    <!-- School Robotic Lab Activity Section -->
-    <section id="lab-activities">
-        <h2>School Robotic Lab Activity</h2>
-        <div id="activity-container" class="grid">
-            <!-- Activities will be loaded here via JavaScript -->
-            <p>Loading recent activities...</p>
-        </div>
-    </section>
-
-    <section>
-        <h2>About the Robotics Lab</h2>
-        <p>
-            Our Robotics & AI Excellence Centre provides hands-on learning using Arduino,
-            LEGO, and AI tools to bridge theory and real-world engineering.
-        </p>
-    </section>
-
-    <section>
-        <h2>Our Tech Stack</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Arduino Uno</h3>
-                <p>The heart of our electronic projects, teaching students micro-controller programming and circuit design.</p>
-                <span class="tech-tag">Hardware</span>
-            </div>
-            <div class="card">
-                <h3>Raspberry Pi</h3>
-                <p>Advanced computing for AI and Computer Vision projects, running Python and Linux environments.</p>
-                <span class="tech-tag">Computing</span>
-            </div>
-            <div class="card">
-                <h3>LEGO SPIKE</h3>
-                <p>Engaging younger minds with modular building and logic-based drag-and-drop coding.</p>
-                <span class="tech-tag">Prototyping</span>
-            </div>
-            <div class="card">
-                <h3>Sensors & IoT</h3>
-                <p>Ultrasonic, Infrared, and WiFi modules to connect robots to the cloud and the real world.</p>
-                <span class="tech-tag">Connectivity</span>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>Student Project Showcase</h2>
-        <div class="grid">
-            <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
-                <h3>Autonomous Rover</h3>
-                <p>A self-driving robot capable of navigating obstacles using ultrasonic sensors and PID control.</p>
-            </div>
-            <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1558444479-c84826091ec2?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
-                <h3>Smart Greenhouse</h3>
-                <p>An IoT system that monitors soil moisture and automates watering using Arduino and NodeMCU.</p>
-            </div>
-            <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
-                <h3>Bionic Arm</h3>
-                <p>A 3D-printed prosthetic arm controlled by muscle sensors (EMG) and servo motors.</p>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>Learning Milestones</h2>
-        <ul style="line-height: 1.8; color: var(--dark-text);">
-            <li><strong>Foundations:</strong> Understanding electrons, components, and basic logic gates.</li>
-            <li><strong>Programming:</strong> Transitioning from Block-based coding to C++ and Python.</li>
-            <li><strong>Mechanics:</strong> Learning about gear ratios, torque, and structural integrity.</li>
-            <li><strong>Innovation:</strong> Capstone projects where students solve a local community problem.</li>
-        </ul>
-    </section>
-
-    <section id="curriculum">
-        <h2>Our Robotics Curriculum</h2>
-
-        <table>
-            <tr>
-                <th>Level</th>
-                <th>Focus</th>
-                <th>Learning</th>
-            </tr>
-            <tr>
-                <td>Primary</td>
-                <td>Basics</td>
-                <td>Simple machines & logic</td>
-            </tr>
-            <tr>
-                <td>Middle</td>
-                <td>Robotics</td>
-                <td>Sensors & Python</td>
-            </tr>
-            <tr>
-                <td>Secondary</td>
-                <td>AI</td>
-                <td>Automation & IoT</td>
-            </tr>
-        </table>
-    </section>
-
-    <section>
-        <h2>Why Choose Robotics?</h2>
-
-        <div class="grid">
-            <div class="card">
-                <h3>Critical Thinking</h3>
-                <p>Problem solving & innovation skills</p>
-            </div>
-
-            <div class="card">
-                <h3>Global Exposure</h3>
-                <p>Competitions like WRO & FLL</p>
-            </div>
-
-            <div class="card">
-                <h3>Career Ready</h3>
-                <p>Future in AI & Engineering</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta">
-        <h2>Ready to Build the Future?</h2>
-        <a href="contact.html" class="btn">Get in Touch</a>
-    </section>
-
+    <h2>School Robotic Lab Activity</h2>
+    <div id="activity-container">Loading...</div>
 </div>
 
-<footer>
-    <p><strong>Krishna Public School International</strong></p>
-    <p>&copy; 2026 KPSI Robotics Lab</p>
-</footer>
+<!-- LOGIN MODAL -->
+<div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+  <div style="background:white; padding:30px; border-radius:12px; width:320px; text-align:center;">
+    
+    <h2 style="color:#003366;">Admin Login</h2>
 
-<!-- Firebase SDKs -->
+    <input type="email" id="adminEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+    <input type="password" id="adminPassword" placeholder="Password" style="width:100%; padding:10px; margin-bottom:15px;">
+    
+    <button onclick="loginAdmin()" style="width:100%; padding:10px; background:#003366; color:white;">Login</button>
+    <br><br>
+    <button onclick="closeLoginModal()" style="color:red;">Cancel</button>
+  </div>
+</div>
+
+<!-- FIREBASE -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-   const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBMMwRCiPedXsMN9V9InvFv89OypyPiOHk",
   authDomain: "robotic-af198.firebaseapp.com",
   projectId: "robotic-af198",
-  storageBucket: "robotic-af198.firebasestorage.app",
+  storageBucket: "robotic-af198.appspot.com",
   messagingSenderId: "129207344993",
-  appId: "1:129207344993:web:f351629c66dcdd90216f20",
-  measurementId: "G-V2094BCKKE"
+  appId: "1:129207344993:web:f351629c66dcdd90216f20"
 };
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+// ✅ LOGIN MODAL
+window.openLoginModal = () => {
+  document.getElementById("loginModal").style.display = "flex";
+};
 
-    function loadActivities(activitiesObj) {
-        const container = document.getElementById('activity-container');
-        if (!activitiesObj) {
-            container.innerHTML = '<p>No recent activities to show. Add some via the Admin Panel!</p>';
-            return;
-        }
+window.closeLoginModal = () => {
+  document.getElementById("loginModal").style.display = "none";
+};
 
-        container.innerHTML = '';
-        // Convert object to array and sort by timestamp
-        const activities = Object.values(activitiesObj).sort((a, b) => b.timestamp - a.timestamp);
-        
-        activities.forEach(act => {
-            const card = document.createElement('div');
-            card.className = 'card activity-card';
-            
-            let mediaHtml = '';
-            if (act.type === 'video') {
-                // Check if it's a YouTube URL or a direct link
-                if (act.url.includes('youtube.com') || act.url.includes('youtu.be')) {
-                    let videoId = '';
-                    if (act.url.includes('v=')) {
-                        videoId = act.url.split('v=')[1].split('&')[0];
-                    } else if (act.url.includes('youtu.be/')) {
-                        videoId = act.url.split('youtu.be/')[1].split('?')[0];
-                    } else {
-                        videoId = act.url.split('/').pop().split('?')[0];
-                    }
-                    mediaHtml = `<iframe class="activity-media" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-                } else {
-                    mediaHtml = `<video src="${act.url}" class="activity-media" controls></video>`;
-                }
-            } else {
-                mediaHtml = `<img src="${act.url}" class="activity-media" alt="Lab Activity">`;
-            }
+// ✅ LOGIN FUNCTION
+window.loginAdmin = async function () {
+  const email = document.getElementById("adminEmail").value;
+  const password = document.getElementById("adminPassword").value;
 
-            card.innerHTML = `
-                ${mediaHtml}
-                <p>${act.description}</p>
-            `;
-            container.appendChild(card);
-        });
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Login Successful");
+    closeLoginModal();
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+// ✅ NAV CONTROL (FIXED)
+onAuthStateChanged(auth, (user) => {
+  const adminNav = document.getElementById("admin-nav-item");
+  const loginNav = document.getElementById("login-nav-item");
+
+  if (user) {
+    adminNav.style.display = "block";
+    loginNav.style.display = "none";
+  } else {
+    adminNav.style.display = "none";
+    loginNav.style.display = "block";
+  }
+});
+
+// ✅ LOAD ACTIVITIES
+onValue(ref(db, 'activities'), (snapshot) => {
+  const container = document.getElementById('activity-container');
+  const data = snapshot.val();
+
+  if (!data) {
+    container.innerHTML = "No activities";
+    return;
+  }
+
+  container.innerHTML = "";
+
+  Object.values(data).forEach(act => {
+    const div = document.createElement("div");
+
+    if (act.type === "video") {
+      div.innerHTML = `<video src="${act.url}" width="300" controls></video><p>${act.description}</p>`;
+    } else {
+      div.innerHTML = `<img src="${act.url}" width="300"><p>${act.description}</p>`;
     }
 
-    // Real-time listener
-    onValue(ref(db, 'activities'), (snapshot) => {
-        loadActivities(snapshot.val());
-    });
-
-    function updateNav(user) {
-        const adminNavItem = document.getElementById('admin-nav-item');
-        const loginNavItem = document.getElementById('login-nav-item');
-
-        if (user) {
-            if (adminNavItem) adminNavItem.style.display = 'block';
-            if (loginNavItem) loginNavItem.style.display = 'none';
-            localStorage.setItem('isAdmin', 'true');
-        } else {
-            if (adminNavItem) adminNavItem.style.display = 'none';
-            if (loginNavItem) loginNavItem.style.display = 'block';
-            localStorage.removeItem('isAdmin');
-        }
-    }
-
-    onAuthStateChanged(auth, (user) => {
-        updateNav(user);
-    });
-
-    window.adminLogin = async function() {
-        const email = prompt("Enter Admin Email:");
-        const password = prompt("Enter Admin Password:");
-        if (email && password) {
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                alert("Logged in successfully!");
-            } catch (error) {
-                alert("Login failed: " + error.message);
-            }
-        }
-    }
+    container.appendChild(div);
+  });
+});
 </script>
+
 </body>
 </html>
