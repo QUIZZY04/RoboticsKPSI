@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Lamp Project | Starter Level | KPSI Robotics</title>
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #ffcc00;
+            --light-bg: #f4f7f9;
+            --dark-text: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--light-bg); line-height: 1.6; }
+        nav { background: var(--primary-blue); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
+        nav .logo { display: flex; align-items: center; font-weight: bold; color: var(--accent-gold); }
+        nav .logo img { height: 55px; margin-right: 12px; border-radius: 6px; background: white; padding: 3px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: var(--transition); }
+        nav ul li a:hover { color: var(--accent-gold); }
+        .container { max-width: 900px; margin: 50px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: var(--shadow); }
+        .hero-project {
+            height: 350px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?auto=format&fit=crop&q=80&w=1200') no-repeat center/cover;
+            border-radius: 10px; margin-bottom: 30px; display: flex; align-items: flex-end; padding: 30px; color: white;
+        }
+        h1, h2, h3 { color: var(--primary-blue); }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 25px; border-radius: 8px; font-family: 'Consolas', monospace; overflow-x: auto; margin: 20px 0; border-left: 5px solid #4CAF50; }
+        .parts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
+        .part-item { background: #eef6ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-blue); font-weight: bold; }
+        .step-box { margin-bottom: 25px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .step-num { background: var(--primary-blue); color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 10px; }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <div class="hero-project"><h1>The Smart Lamp</h1></div>
+    <p>Step into the world of smart automation! This project teaches you how to use an <strong>Arduino</strong> to sense the environment and make decisions based on light levels.</p>
+    
+    <h2>1. The Bill of Materials</h2>
+    <div class="parts-grid">
+        <div class="part-item">Arduino Uno R3</div>
+        <div class="part-item">LDR (Light Sensor)</div>
+        <div class="part-item">10k Ohm Resistor</div>
+        <div class="part-item">LED & 220Ω Resistor</div>
+    </div>
+
+    <h2>2. Wiring It Up</h2>
+    <div class="step-box"><span class="step-num">1</span> <strong>LDR Connection:</strong> Create a voltage divider with the LDR and 10k resistor. Connect the middle to <strong>Analog Pin A0</strong>.</div>
+    <div class="step-box"><span class="step-num">2</span> <strong>LED Connection:</strong> Connect the long leg of the LED to <strong>Digital Pin 13</strong> through a 220 ohm resistor.</div>
+    <div class="step-box"><span class="step-num">3</span> <strong>Power:</strong> Connect the rails to 5V and GND on the Arduino.</div>
+
+    <h2>3. The Program (The Brains)</h2>
+    <div class="code-block">
+<pre>
+const int ldrPin = A0;
+const int ledPin = 13;
+const int threshold = 400; 
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int lightVal = analogRead(ldrPin);
+  Serial.println(lightVal); 
+
+  if (lightVal < threshold) {
+    digitalWrite(ledPin, HIGH); // Turn on lamp
+  } else {
+    digitalWrite(ledPin, LOW);  // Turn off lamp
+  }
+  delay(100);
+}
+</pre>
+    </div>
+</div>
+<footer><p>&copy; 2026 KPSI Robotics Lab</p></footer>
+<script>
+    function checkAdmin() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('admin_mode') === '1') {
+            localStorage.setItem('isAdmin', 'true');
+        }
+
+        if (localStorage.getItem('isAdmin') === 'true') {
+            const adminNavItem = document.getElementById('admin-nav-item');
+            if (adminNavItem) adminNavItem.style.display = 'block';
+        }
+    }
+    window.addEventListener('load', checkAdmin);
+</script>
+</body>
+</html>

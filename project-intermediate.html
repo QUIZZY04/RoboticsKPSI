@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Object Tracker | Explorer Level | KPSI Robotics</title>
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #ffcc00;
+            --light-bg: #f4f7f9;
+            --dark-text: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--light-bg); line-height: 1.6; }
+        nav { background: var(--primary-blue); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
+        nav .logo { display: flex; align-items: center; font-weight: bold; color: var(--accent-gold); }
+        nav .logo img { height: 55px; margin-right: 12px; border-radius: 6px; background: white; padding: 3px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: var(--transition); }
+        nav ul li a:hover { color: var(--accent-gold); }
+        .container { max-width: 1000px; margin: 50px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: var(--shadow); }
+        .hero-project {
+            height: 350px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1200') no-repeat center/cover;
+            border-radius: 10px; margin-bottom: 30px; display: flex; align-items: flex-end; padding: 30px; color: white;
+        }
+        h1, h2, h3 { color: var(--primary-blue); }
+        .tech-card { background: #fafafa; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid var(--accent-gold); }
+        .logic-step { background: var(--primary-blue); color: white; padding: 20px; border-radius: 8px; margin-top: 15px; }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <div class="hero-project"><h1>Object Tracking Rover</h1></div>
+    <p>Ready for a challenge? The <strong>Object Tracker</strong> is a mobile robot that uses sonar technology to detect objects and move toward them automatically. This project combines mechanical engineering with real-time sensor processing.</p>
+    
+    <h2>Core Technology Stack</h2>
+    <div class="tech-card">
+        <h3>1. The HC-SR04 Ultrasonic Sensor</h3>
+        <p>This sensor works just like a bat's ears. It sends out high-frequency sound waves and measures how long it takes for the echo to return to calculate distance with high accuracy.</p>
+    </div>
+    <div class="tech-card">
+        <h3>2. L298N Motor Driver</h3>
+        <p>Since the motors need more power than an Arduino can provide, the L298N acts as a heavy-duty bridge, taking signals from the Arduino and providing the necessary current to the DC motors.</p>
+    </div>
+
+    <h2>The Navigation Logic</h2>
+    <p>The robot follows a simple but effective algorithm to interact with its surroundings:</p>
+    
+    <div class="logic-step">
+        <strong>Step 1: Distance Scan</strong><br>
+        Read value from the Ultrasonic Sensor.
+    </div>
+    <div class="logic-step" style="background: #004d99;">
+        <strong>Step 2: Compare Thresholds</strong><br>
+        Is the object between 15cm and 40cm?
+    </div>
+    <div class="logic-step" style="background: #0066cc;">
+        <strong>Step 3: Actuation</strong><br>
+        If YES, move motors forward. If < 15cm, move backward. If > 40cm, stop and scan.
+    </div>
+
+    <h2 style="margin-top: 40px;">Pro Tip: Improving Performance</h2>
+    <p>To make the robot smoother, we can implement <strong>PID (Proportional Integral Derivative)</strong> control. This allows the robot to slow down as it gets closer to the object, rather than stopping abruptly!</p>
+</div>
+<footer><p>&copy; 2026 KPSI Robotics Lab</p></footer>
+</body>
+</html>

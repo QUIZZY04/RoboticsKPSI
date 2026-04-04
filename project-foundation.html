@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiggle-Bot Project | Junior Maker | KPSI Robotics</title>
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #ffcc00;
+            --light-bg: #f4f7f9;
+            --dark-text: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        nav .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+        }
+
+        nav .logo img {
+            height: 55px;
+            margin-right: 12px;
+            border-radius: 6px;
+            background: white;
+            padding: 3px;
+        }
+
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: var(--transition); }
+        nav ul li a:hover { color: var(--accent-gold); }
+
+        /* CONTENT */
+        .container { max-width: 900px; margin: 50px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: var(--shadow); }
+        
+        .hero-project {
+            height: 400px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&q=80&w=1200') no-repeat center/cover;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            color: white;
+        }
+
+        h1, h2, h3 { color: var(--primary-blue); }
+        .parts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
+        .part-item { background: #fff9e6; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-gold); font-weight: bold; }
+        .part-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 10px; }
+        
+        .step-box { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; transition: var(--transition); }
+        .step-box:hover { border-color: var(--accent-gold); background: #fdfdfd; }
+        .step-num { background: var(--primary-blue); color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 10px; }
+        
+        .science-corner { background: #e7f3ff; padding: 25px; border-radius: 12px; margin-top: 40px; border: 2px dashed var(--primary-blue); }
+        
+        .tip-box { 
+            background: #fff4f4; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-top: 20px; 
+            border-left: 5px solid #ff4d4d;
+        }
+
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <div class="hero-project"><h1>The Wiggle-Bot</h1></div>
+    <p>Welcome, Junior Maker! The <strong>Wiggle-Bot</strong> is a fantastic way to learn about electronics and mechanical motion. This robot doesn't need complex coding; it uses the power of vibrations to dance and move across your desk! It's the perfect first step into the world of engineering.</p>
+    
+    <h2>1. Gather Your Materials</h2>
+    <div class="parts-grid">
+        <div class="part-item">
+            <img src="https://images.unsplash.com/photo-159742324403d-d1950bc9643d?auto=format&fit=crop&q=80&w=400" alt="Vibration Motor">
+            Vibration Motor (3V)
+        </div>
+        <div class="part-item">
+            <img src="https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&q=80&w=400" alt="Battery">
+            Coin Cell Battery
+        </div>
+        <div class="part-item">
+            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=400" alt="Brush">
+            Scrub Brush
+        </div>
+        <div class="part-item">
+            <img src="https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?auto=format&fit=crop&q=80&w=400" alt="Tape">
+            Double-Sided Tape
+        </div>
+    </div>
+
+    <h2>2. Building Steps</h2>
+    <div class="step-box"><span class="step-num">1</span> <strong>Prepare the Base:</strong> Stick a piece of tape to the top of your brush or sponge. This will be the "chassis" of your robot.</div>
+    <div class="step-box"><span class="step-num">2</span> <strong>Mount the Motor:</strong> Place the vibration motor on the tape. Make sure the spinning weight can move freely!</div>
+    <div class="step-box"><span class="step-num">3</span> <strong>Connect the Power:</strong> Use tape to connect the red wire to the "+" side of the battery and the blue/black wire to the "-" side.</div>
+    <div class="step-box"><span class="step-num">4</span> <strong>Let it Dance:</strong> Place your robot on a smooth surface and watch it wiggle around!</div>
+
+    <div class="science-corner">
+        <h3>Science Corner: Why does it wiggle?</h3>
+        <p>This robot uses an <strong>unbalanced mass</strong>. Inside the tiny motor, there is a small weight that is not centered on the spinning shaft. When it spins fast, it creates a centrifugal force that shakes the whole motor. This vibration is transferred to the brush bristles, making them "hop" and move the robot!</p>
+    </div>
+
+    <div class="tip-box">
+        <h3>Troubleshooting Tips</h3>
+        <ul>
+            <li><strong>Not moving?</strong> Check if the wires are touching the metal of the battery firmly.</li>
+            <li><strong>Flipping over?</strong> Try moving the motor or battery to the center of the brush to balance it better.</li>
+            <li><strong>Wires loose?</strong> Use a small piece of electrical tape to hold them onto the battery more securely.</li>
+        </ul>
+    </div>
+
+    <h2>3. What's Next?</h2>
+    <p>Once your Wiggle-Bot is working, try adding googly eyes, pipe-cleaner legs, or even a small paper hat! You can also try using different types of brushes to see which one moves the fastest.</p>
+</div>
+<footer><p>&copy; 2026 KPSI Robotics Lab</p></footer>
+</body>
+</html>

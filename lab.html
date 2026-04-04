@@ -30,6 +30,7 @@
         <li><a href="lab.html" style="color: var(--accent-gold);">Lab</a></li>
         <li><a href="curriculum.html">Curriculum</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
     </ul>
 </nav>
 <div class="container">
@@ -53,5 +54,19 @@
     <p><strong>Krishna Public School International</strong></p>
     <p>&copy; 2026 KPSI Robotics Lab</p>
 </footer>
+<script>
+    function checkAdmin() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('admin_mode') === '1') {
+            localStorage.setItem('isAdmin', 'true');
+        }
+
+        if (localStorage.getItem('isAdmin') === 'true') {
+            const adminNavItem = document.getElementById('admin-nav-item');
+            if (adminNavItem) adminNavItem.style.display = 'block';
+        }
+    }
+    window.addEventListener('load', checkAdmin);
+</script>
 </body>
 </html>

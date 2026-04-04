@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | KPSI Robotics</title>
+    <style>
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; --white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--light-bg); margin: 0; padding: 20px; }
+        .admin-container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2 { color: var(--primary-blue); }
+        .form-section { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-add { background: var(--primary-blue); color: white; }
+        .btn-edit { background: #ff9800; color: white; margin-right: 5px; }
+        .btn-delete { background: #f44336; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: var(--primary-blue); color: white; }
+        .preview-media { width: 100px; height: 60px; object-fit: cover; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h1>Robotic Lab Admin Panel</h1>
+    <p>
+        <a href="index.html">← Back to Website</a> | 
+        <a href="#" onclick="logoutAdmin()" style="color: #f44336; text-decoration: none;">Logout Admin Mode</a>
+    </p>
+
+    <div class="form-section">
+        <h2 id="form-title">Upload New Activity</h2>
+        <input type="hidden" id="edit-index" value="-1">
+        <div class="form-group">
+            <label>Media Type</label>
+            <select id="media-type">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Media URL (Image URL or YouTube/Video Link)</label>
+            <input type="text" id="media-url" placeholder="https://example.com/image.jpg">
+            <small>Or upload local image:</small>
+            <input type="file" id="file-input" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label>Activity Description</label>
+            <textarea id="media-desc" rows="3" placeholder="Describe the lab activity..."></textarea>
+        </div>
+        <button class="btn btn-add" onclick="saveActivity()" id="save-btn">Upload Activity</button>
+        <button class="btn" onclick="resetForm()" style="background:#ccc;">Cancel</button>
+    </div>
+
+    <h2>Manage Existing Activities</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="admin-activity-list">
+            <!-- Activities will be listed here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let activities = JSON.parse(localStorage.getItem('roboticActivities')) || [];
+
+    // Handle local file selection
+    document.getElementById('file-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('media-url').value = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function renderAdminList() {
+        const list = document.getElementById('admin-activity-list');
+        list.innerHTML = '';
+        activities.forEach((act, index) => {
+            const row = document.createElement('tr');
+            const preview = act.type === 'image' 
+                ? `<img src="${act.url}" class="preview-media">` 
+                : `<div class="preview-media" style="background:#000; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;">Video</div>`;
+            
+            row.innerHTML = `
+                <td>${preview}</td>
+                <td>${act.type}</td>
+                <td>${act.description.substring(0, 50)}...</td>
+                <td>
+                    <button class="btn btn-edit" onclick="editActivity(${index})">Edit</button>
+                    <button class="btn btn-delete" onclick="deleteActivity(${index})">Delete</button>
+                </td>
+            `;
+            list.appendChild(row);
+        });
+    }
+
+    function saveActivity() {
+        const type = document.getElementById('media-type').value;
+        const url = document.getElementById('media-url').value;
+        const description = document.getElementById('media-desc').value;
+        const editIndex = parseInt(document.getElementById('edit-index').value);
+
+        if (!url || !description) {
+            alert("Please provide both media and description.");
+            return;
+        }
+
+        const newActivity = { type, url, description };
+
+        if (editIndex > -1) {
+            activities[editIndex] = newActivity;
+        } else {
+            activities.push(newActivity);
+        }
+
+        localStorage.setItem('roboticActivities', JSON.stringify(activities));
+        resetForm();
+        renderAdminList();
+        alert("Activity saved successfully!");
+    }
+
+    function deleteActivity(index) {
+        if (confirm("Are you sure you want to delete this activity?")) {
+            activities.splice(index, 1);
+            localStorage.setItem('roboticActivities', JSON.stringify(activities));
+            renderAdminList();
+        }
+    }
+
+    function editActivity(index) {
+        const act = activities[index];
+        document.getElementById('media-type').value = act.type;
+        document.getElementById('media-url').value = act.url;
+        document.getElementById('media-desc').value = act.description;
+        document.getElementById('edit-index').value = index;
+        
+        document.getElementById('form-title').innerText = "Edit Activity";
+        document.getElementById('save-btn').innerText = "Update Activity";
+        window.scrollTo(0, 0);
+    }
+
+    function resetForm() {
+        document.getElementById('media-url').value = '';
+        document.getElementById('media-desc').value = '';
+        document.getElementById('file-input').value = '';
+        document.getElementById('edit-index').value = '-1';
+        document.getElementById('form-title').innerText = "Upload New Activity";
+        document.getElementById('save-btn').innerText = "Upload Activity";
+    }
+    
+    function logoutAdmin() {
+        localStorage.removeItem('isAdmin');
+        window.location.href = 'index.html';
+    }
+
+    renderAdminList();
+</script>
+
+</body>
+</html>
