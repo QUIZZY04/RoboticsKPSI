@@ -67,15 +67,6 @@
         <button class="btn" onclick="resetForm()" style="background:#ccc;">Cancel</button>
     </div>
 
-    <div class="form-section">
-        <h2>Change Admin Password</h2>
-        <div class="form-group">
-            <label>New Password</label>
-            <input type="password" id="new-password" placeholder="Enter new password">
-        </div>
-        <button class="btn btn-edit" onclick="changePassword()">Update Password</button>
-    </div>
-
     <h2>Manage Existing Activities</h2>
     <table>
         <thead>
@@ -92,8 +83,54 @@
     </table>
 </div>
 
-<script>
-    let activities = JSON.parse(localStorage.getItem('roboticActivities')) || [];
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    // TODO: Replace with your project's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSy...", 
+        authDomain: "roboticskpsi.firebaseapp.com",
+        databaseURL: "https://roboticskpsi-default-rtdb.firebaseio.com",
+        projectId: "roboticskpsi",
+        storageBucket: "roboticskpsi.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    // Check if user is authenticated with Firebase
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            performFirebaseLogin();
+        }
+    });
+
+    async function performFirebaseLogin() {
+        const email = prompt("Enter Admin Email:");
+        const password = prompt("Firebase Admin Authentication Required. Enter Admin Password:");
+        
+        if (email && password) {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showStatus("Firebase Authenticated Successfully!");
+            } catch (error) {
+                showStatus("Firebase Login Failed: " + error.message, false);
+                window.location.href = 'index.html';
+            }
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+
+    let currentFile = null;
 
     function showStatus(text, success = true) {
         const msg = document.getElementById('status-msg');
@@ -106,19 +143,17 @@
 
     // Handle local file selection
     document.getElementById('file-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('media-url').value = event.target.result;
-        };
-        reader.readAsDataURL(file);
+        currentFile = e.target.files[0];
+        if (currentFile) {
+            document.getElementById('media-url').value = `Local file: ${currentFile.name}`;
+        }
     });
 
-    function renderAdminList() {
+    function renderAdminList(data) {
         const list = document.getElementById('admin-activity-list');
         list.innerHTML = '';
-        activities.forEach((act, index) => {
+        Object.keys(data).forEach((id) => {
+            const act = data[id];
             const row = document.createElement('tr');
             const preview = act.type === 'image' 
                 ? `<img src="${act.url}" class="preview-media">` 
@@ -129,93 +164,75 @@
                 <td>${act.type}</td>
                 <td>${act.description.substring(0, 50)}...</td>
                 <td>
-                    <button class="btn btn-edit" onclick="editActivity(${index})">Edit</button>
-                    <button class="btn btn-delete" onclick="deleteActivity(${index})">Delete</button>
+                    <button class="btn btn-delete" onclick="deleteActivity('${id}')">Delete</button>
                 </td>
             `;
             list.appendChild(row);
         });
     }
 
-    function saveActivity() {
-        const type = document.getElementById('media-type').value;
-        const url = document.getElementById('media-url').value;
-        const description = document.getElementById('media-desc').value;
-        const editIndex = parseInt(document.getElementById('edit-index').value);
+    // Sync with Firebase Database
+    onValue(ref(db, 'activities'), (snapshot) => {
+        const data = snapshot.val() || {};
+        renderAdminList(data);
+    });
 
-        if (!url || !description) {
+    window.saveActivity = async function() {
+        const type = document.getElementById('media-type').value;
+        let url = document.getElementById('media-url').value;
+        const description = document.getElementById('media-desc').value;
+
+        if (!description || (!url && !currentFile)) {
             showStatus("Please provide both media and description.", false);
             return;
         }
 
-        const newActivity = { type, url, description };
-        const isEdit = editIndex > -1;
-
         try {
-            if (isEdit) {
-                activities[editIndex] = newActivity;
-            } else {
-                activities.push(newActivity);
+            // If a local file is chosen, upload to Firebase Storage first
+            if (currentFile) {
+                showStatus("Uploading file...", true);
+                const storageRef = sRef(storage, `activities/${Date.now()}_${currentFile.name}`);
+                const snapshot = await uploadBytes(storageRef, currentFile);
+                url = await getDownloadURL(snapshot.ref);
             }
 
-            localStorage.setItem('roboticActivities', JSON.stringify(activities));
+            const activitiesRef = ref(db, 'activities');
+            await push(activitiesRef, { type, url, description, timestamp: Date.now() });
+
             resetForm();
-            renderAdminList();
-            showStatus(isEdit ? "Activity updated successfully!" : "Activity saved successfully!");
+            showStatus("Activity saved to Cloud successfully!");
             window.scrollTo(0, 0);
         } catch (e) {
-            showStatus("Error: Storage limit reached. Try using a URL link instead of a local file upload.", false);
+            console.error(e);
+            showStatus("Error connecting to Firebase. Check console.", false);
             window.scrollTo(0, 0);
         }
     }
 
-    function deleteActivity(index) {
+    window.deleteActivity = async function(id) {
         if (confirm("Are you sure you want to delete this activity?")) {
-            activities.splice(index, 1);
-            localStorage.setItem('roboticActivities', JSON.stringify(activities));
-            renderAdminList();
-            showStatus("Activity deleted successfully!");
+            try {
+                await remove(ref(db, `activities/${id}`));
+                showStatus("Activity deleted from Cloud!");
+            } catch (e) {
+                showStatus("Error deleting activity.", false);
+            }
         }
     }
 
-    function editActivity(index) {
-        const act = activities[index];
-        document.getElementById('media-type').value = act.type;
-        document.getElementById('media-url').value = act.url;
-        document.getElementById('media-desc').value = act.description;
-        document.getElementById('edit-index').value = index;
-        
-        document.getElementById('form-title').innerText = "Edit Activity";
-        document.getElementById('save-btn').innerText = "Update Activity";
-        window.scrollTo(0, 0);
-    }
-
-    function resetForm() {
+    window.resetForm = function() {
         document.getElementById('media-url').value = '';
         document.getElementById('media-desc').value = '';
         document.getElementById('file-input').value = '';
-        document.getElementById('edit-index').value = '-1';
+        currentFile = null;
         document.getElementById('form-title').innerText = "Upload New Activity";
         document.getElementById('save-btn').innerText = "Upload Activity";
     }
-    
-    function logoutAdmin() {
-        localStorage.removeItem('isAdmin');
+
+    window.logoutAdmin = function() {
+        signOut(auth);
         window.location.href = 'index.html';
     }
-
-    function changePassword() {
-        const newPass = document.getElementById('new-password').value;
-        if (!newPass) {
-            showStatus("Please enter a new password.", false);
-            return;
-        }
-        localStorage.setItem('adminPassword', newPass);
-        showStatus("Password updated successfully!");
-        document.getElementById('new-password').value = '';
-    }
-
-    renderAdminList();
 </script>
 
 </body>

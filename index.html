@@ -493,17 +493,37 @@
     <p>&copy; 2026 KPSI Robotics Lab</p>
 </footer>
 
-<script>
-    function loadActivities() {
-        const container = document.getElementById('activity-container');
-        const activities = JSON.parse(localStorage.getItem('roboticActivities')) || [];
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        if (activities.length === 0) {
+    const firebaseConfig = {
+        apiKey: "AIzaSy...", 
+        authDomain: "roboticskpsi.firebaseapp.com",
+        databaseURL: "https://roboticskpsi-default-rtdb.firebaseio.com",
+        projectId: "roboticskpsi",
+        storageBucket: "roboticskpsi.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    function loadActivities(activitiesObj) {
+        const container = document.getElementById('activity-container');
+        if (!activitiesObj) {
             container.innerHTML = '<p>No recent activities to show. Add some via the Admin Panel!</p>';
             return;
         }
 
         container.innerHTML = '';
+        // Convert object to array and sort by timestamp
+        const activities = Object.values(activitiesObj).sort((a, b) => b.timestamp - a.timestamp);
+        
         activities.forEach(act => {
             const card = document.createElement('div');
             card.className = 'card activity-card';
@@ -536,44 +556,42 @@
         });
     }
 
-    function checkAdmin() {
-        const params = new URLSearchParams(window.location.search);
-        
-        // Activate admin mode if the secret parameter is present
-        // '1' activates, '0' or removing it keeps current state
-        if (params.get('admin_mode') === '1') {
-            localStorage.setItem('isAdmin', 'true');
-        }
-        
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    // Real-time listener
+    onValue(ref(db, 'activities'), (snapshot) => {
+        loadActivities(snapshot.val());
+    });
+
+    function updateNav(user) {
         const adminNavItem = document.getElementById('admin-nav-item');
         const loginNavItem = document.getElementById('login-nav-item');
 
-        if (isAdmin) {
+        if (user) {
             if (adminNavItem) adminNavItem.style.display = 'block';
             if (loginNavItem) loginNavItem.style.display = 'none';
+            localStorage.setItem('isAdmin', 'true');
         } else {
             if (adminNavItem) adminNavItem.style.display = 'none';
             if (loginNavItem) loginNavItem.style.display = 'block';
+            localStorage.removeItem('isAdmin');
         }
     }
 
-    function adminLogin() {
-        const password = prompt("Enter Admin Password:");
-        const correctPassword = localStorage.getItem('adminPassword') || "admin123";
-        if (password === correctPassword) {
-            localStorage.setItem('isAdmin', 'true');
-            checkAdmin();
-            alert("Logged in successfully!");
-        } else if (password !== null) {
-            alert("Incorrect password.");
-        }
-    }
-
-    window.addEventListener('load', () => {
-        loadActivities();
-        checkAdmin();
+    onAuthStateChanged(auth, (user) => {
+        updateNav(user);
     });
+
+    window.adminLogin = async function() {
+        const email = prompt("Enter Admin Email:");
+        const password = prompt("Enter Admin Password:");
+        if (email && password) {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Logged in successfully!");
+            } catch (error) {
+                alert("Login failed: " + error.message);
+            }
+        }
+    }
 </script>
 </body>
 </html>

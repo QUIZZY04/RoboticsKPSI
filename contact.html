@@ -59,38 +59,55 @@
     <p><strong>Krishna Public School International</strong></p>
     <p>&copy; 2026 KPSI Robotics Lab</p>
 </footer>
-<script>
-    function checkAdmin() {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('admin_mode') === '1') {
-            localStorage.setItem('isAdmin', 'true');
-        }
-        
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSy...", 
+        authDomain: "roboticskpsi.firebaseapp.com",
+        databaseURL: "https://roboticskpsi-default-rtdb.firebaseio.com",
+        projectId: "roboticskpsi",
+        storageBucket: "roboticskpsi.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    function updateNav(user) {
         const adminNavItem = document.getElementById('admin-nav-item');
         const loginNavItem = document.getElementById('login-nav-item');
 
-        if (isAdmin) {
+        if (user) {
             if (adminNavItem) adminNavItem.style.display = 'block';
             if (loginNavItem) loginNavItem.style.display = 'none';
+            localStorage.setItem('isAdmin', 'true');
         } else {
             if (adminNavItem) adminNavItem.style.display = 'none';
             if (loginNavItem) loginNavItem.style.display = 'block';
+            localStorage.removeItem('isAdmin');
         }
     }
 
-    function adminLogin() {
+    onAuthStateChanged(auth, (user) => {
+        updateNav(user);
+    });
+
+    window.adminLogin = async function() {
+        const email = prompt("Enter Admin Email:");
         const password = prompt("Enter Admin Password:");
-        const correctPassword = localStorage.getItem('adminPassword') || "admin123";
-        if (password === correctPassword) {
-            localStorage.setItem('isAdmin', 'true');
-            checkAdmin();
-            alert("Logged in successfully!");
-        } else if (password !== null) {
-            alert("Incorrect password.");
+        if (email && password) {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Logged in successfully!");
+            } catch (error) {
+                alert("Login failed: " + error.message);
+            }
         }
     }
-    window.addEventListener('load', checkAdmin);
 </script>
 </body>
 </html>
