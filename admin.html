@@ -2,55 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel | KPSI Robotics</title>
+    <title>Admin Dashboard | KPSI Robotics</title>
     <style>
         :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--light-bg); padding: 20px; }
         .admin-container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .form-section { background: #fdfdfd; border: 1px solid #eee; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .form-section { background: #fcfcfc; border: 1px solid #eee; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-save { background: var(--primary-blue); color: white; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: var(--primary-blue); color: white; }
         .btn-edit { background: #007bff; color: white; margin-right: 5px; }
         .btn-delete { background: #dc3545; color: white; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: var(--primary-blue); color: white; }
         .preview-media { width: 80px; height: 50px; object-fit: cover; border-radius: 4px; }
-        #status-msg { display: none; padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; }
+        #status-msg { display: none; padding: 12px; margin-bottom: 20px; border-radius: 6px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
-    <h1>Lab Admin Dashboard</h1>
+    <h1>Lab Admin Management</h1>
     <div id="status-msg"></div>
-    <p><a href="index.html">← Back to Site</a> | <button onclick="logout()" style="color:red; background:none; border:none; cursor:pointer;">Logout</button></p>
+    
+    <p>
+        <a href="index.html">← View Public Website</a> | 
+        <button onclick="logout()" style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;">Logout</button>
+    </p>
 
     <div class="form-section">
-        <h2 id="form-title">Upload New Activity</h2>
+        <h2 id="form-title">Upload Lab Activity</h2>
         <input type="hidden" id="edit-id" value="">
+        
         <div class="form-group">
-            <label>Upload Media (Image or MP4)</label>
+            <label>Select Media File (Image or MP4 Video)</label>
             <input type="file" id="file-input" accept="image/*,video/mp4">
         </div>
         <div class="form-group">
-            <label>Or Media URL</label>
-            <input type="text" id="media-url" placeholder="https://...">
+            <label>Activity Description</label>
+            <textarea id="media-desc" rows="3" placeholder="Explain the activity..."></textarea>
         </div>
-        <div class="form-group">
-            <label>Description</label>
-            <textarea id="media-desc" rows="3"></textarea>
-        </div>
-        <button class="btn btn-save" id="save-btn" onclick="saveActivity()">Upload Activity</button>
-        <button class="btn" onclick="resetForm()" style="background:#ddd;">Cancel</button>
+        
+        <button class="btn btn-primary" id="save-btn" onclick="saveActivity()">Upload Activity</button>
+        <button class="btn" onclick="resetForm()" style="background:#ddd; margin-left:10px;">Clear Form</button>
     </div>
 
-    <h2>Current Activities</h2>
+    <h2>Manage Uploaded Files</h2>
     <table>
-        <thead><tr><th>Preview</th><th>Description</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Type</th><th>Preview</th><th>Description</th><th>Actions</th></tr></thead>
         <tbody id="activity-list"></tbody>
     </table>
 </div>
@@ -77,76 +79,94 @@
     onAuthStateChanged(auth, user => { if(!user) window.location.href='index.html'; });
 
     let currentFile = null;
-    let localData = {};
+    let localActivities = {};
     document.getElementById('file-input').onchange = (e) => currentFile = e.target.files[0];
 
-    function showMsg(t, s=true) {
-        const m = document.getElementById('status-msg');
-        m.innerText = t; m.style.display = 'block';
-        m.style.background = s ? '#d4edda' : '#f8d7da';
-        setTimeout(() => m.style.display='none', 3000);
+    function showStatus(text, success = true) {
+        const msg = document.getElementById('status-msg');
+        msg.innerText = text; msg.style.display = 'block';
+        msg.style.background = success ? '#d4edda' : '#f8d7da';
+        msg.style.color = success ? '#155724' : '#721c24';
+        setTimeout(() => msg.style.display = 'none', 4000);
     }
 
-    onValue(ref(db, 'activities'), snap => {
-        localData = snap.val() || {};
+    onValue(ref(db, 'activities'), snapshot => {
+        localActivities = snapshot.val() || {};
         const list = document.getElementById('activity-list');
         list.innerHTML = '';
-        Object.keys(localData).reverse().forEach(id => {
-            const act = localData[id];
+        Object.keys(localActivities).reverse().forEach(id => {
+            const act = localActivities[id];
+            const mediaPreview = act.type === 'video' ? '<b>[VIDEO]</b>' : `<img src="${act.url}" class="preview-media">`;
             list.innerHTML += `
                 <tr>
-                    <td>${act.type==='video' ? 'VIDEO' : `<img src="${act.url}" class="preview-media">`}</td>
-                    <td>${act.description.substring(0,30)}...</td>
+                    <td>${act.type.toUpperCase()}</td>
+                    <td>${mediaPreview}</td>
+                    <td>${act.description.substring(0,40)}...</td>
                     <td>
-                        <button class="btn btn-edit" onclick="editAct('${id}')">Edit</button>
-                        <button class="btn btn-delete" onclick="deleteAct('${id}')">Delete</button>
+                        <button class="btn btn-edit" onclick="editActivity('${id}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteActivity('${id}')">Delete</button>
                     </td>
                 </tr>`;
         });
     });
 
     window.saveActivity = async () => {
-        const id = document.getElementById('edit-id').value;
-        const desc = document.getElementById('media-desc').value;
-        let url = document.getElementById('media-url').value;
-        let type = "image";
-
-        if(!desc) return showMsg("Add description", false);
-
-        showMsg("Uploading...");
-        if(currentFile) {
-            type = currentFile.type.includes('video') ? 'video' : 'image';
-            const fileRef = sRef(storage, `lab/${Date.now()}_${currentFile.name}`);
-            const snap = await uploadBytes(fileRef, currentFile);
-            url = await getDownloadURL(snap.ref);
+        const editId = document.getElementById('edit-id').value;
+        const description = document.getElementById('media-desc').value;
+        
+        if (!description || (!currentFile && !editId)) {
+            return showStatus("Please provide a description and a file.", false);
         }
 
-        const payload = { url, description: desc, type, timestamp: Date.now() };
-        if(id) await set(ref(db, `activities/${id}`), payload);
-        else await push(ref(db, 'activities'), payload);
+        try {
+            showStatus("Uploading... please wait.");
+            let url = editId ? localActivities[editId].url : "";
+            let type = editId ? localActivities[editId].type : "image";
 
-        resetForm();
-        showMsg("Success!");
+            if (currentFile) {
+                type = currentFile.type.includes('video') ? 'video' : 'image';
+                const storageRef = sRef(storage, `lab_activities/${Date.now()}_${currentFile.name}`);
+                const snapshot = await uploadBytes(storageRef, currentFile);
+                url = await getDownloadURL(snapshot.ref);
+            }
+
+            const data = { url, description, type, timestamp: Date.now() };
+            
+            if (editId) {
+                await set(ref(db, `activities/${editId}`), data);
+                showStatus("Activity Updated!");
+            } else {
+                await push(ref(db, 'activities'), data);
+                showStatus("Activity Uploaded!");
+            }
+            resetForm();
+        } catch (e) {
+            showStatus("Error: " + e.message, false);
+        }
     };
 
-    window.editAct = (id) => {
-        const item = localData[id];
+    window.editActivity = (id) => {
+        const act = localActivities[id];
         document.getElementById('edit-id').value = id;
-        document.getElementById('media-desc').value = item.description;
-        document.getElementById('media-url').value = item.url;
-        document.getElementById('form-title').innerText = "Edit Activity";
+        document.getElementById('media-desc').value = act.description;
+        document.getElementById('form-title').innerText = "Edit Activity Details";
         document.getElementById('save-btn').innerText = "Update Activity";
+        window.scrollTo(0,0);
     };
 
-    window.deleteAct = async (id) => { if(confirm("Delete?")) await remove(ref(db, `activities/${id}`)); };
+    window.deleteActivity = async (id) => {
+        if(confirm("Confirm Delete?")) await remove(ref(db, `activities/${id}`));
+    };
+
     window.resetForm = () => {
         document.getElementById('edit-id').value = '';
         document.getElementById('media-desc').value = '';
-        document.getElementById('media-url').value = '';
+        document.getElementById('file-input').value = '';
         currentFile = null;
-        document.getElementById('form-title').innerText = "Upload New Activity";
+        document.getElementById('form-title').innerText = "Upload Lab Activity";
         document.getElementById('save-btn').innerText = "Upload Activity";
     };
+
     window.logout = () => signOut(auth);
 </script>
 </body>
