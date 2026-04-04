@@ -618,6 +618,7 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 alert("Logged in successfully!");
+                window.location.href = 'admin.html';
             } catch (error) {
                 alert("Login failed: " + error.message);
             }
