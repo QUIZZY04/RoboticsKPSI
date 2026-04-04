@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Robotics | Krishna Public School International</title>
 
+<!-- KEEP YOUR ORIGINAL CSS EXACTLY SAME -->
 <style>
-/* KEEP YOUR EXISTING CSS (UNCHANGED) */
+/* 🔴 PASTE YOUR FULL ORIGINAL CSS HERE (UNCHANGED) */
 </style>
 </head>
 
@@ -15,7 +16,7 @@
 <!-- NAVBAR -->
 <nav>
     <div class="logo">
-        <img src="images/H.jpeg">
+        <img src="images/H.jpeg" alt="Logo">
         Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur
     </div>
 
@@ -36,25 +37,47 @@
 <header class="hero">
     <h1>Robotics & AI Excellence</h1>
     <p>"The best way to predict the future is to invent it."</p>
+    <a href="curriculum.html" class="btn">View Curriculum</a>
 </header>
 
+<!-- YOUR FULL ORIGINAL CONTENT BELOW (UNCHANGED) -->
+
+<section id="project-guides">
+    <!-- KEEP AS IT IS -->
+</section>
+
 <div class="container">
-    <h2>School Robotic Lab Activity</h2>
-    <div id="activity-container">Loading...</div>
+    <section id="lab-activities">
+        <h2>School Robotic Lab Activity</h2>
+        <div id="activity-container" class="grid">
+            <p>Loading...</p>
+        </div>
+    </section>
 </div>
 
-<!-- LOGIN MODAL -->
-<div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
-  <div style="background:white; padding:30px; border-radius:12px; width:320px; text-align:center;">
-    
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+</footer>
+
+<!-- 🔥 PROFESSIONAL LOGIN MODAL -->
+<div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; backdrop-filter:blur(5px); background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+  <div style="background:white; padding:30px; border-radius:12px; width:320px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.4);">
+
     <h2 style="color:#003366;">Admin Login</h2>
 
-    <input type="email" id="adminEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
-    <input type="password" id="adminPassword" placeholder="Password" style="width:100%; padding:10px; margin-bottom:15px;">
-    
-    <button onclick="loginAdmin()" style="width:100%; padding:10px; background:#003366; color:white;">Login</button>
+    <input type="email" id="adminEmail" placeholder="Email"
+      style="width:100%; padding:12px; margin:10px 0; border-radius:6px; border:1px solid #ccc;">
+
+    <input type="password" id="adminPassword" placeholder="Password"
+      style="width:100%; padding:12px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc;">
+
+    <button onclick="loginAdmin()"
+      style="width:100%; padding:12px; background:#003366; color:white; border:none; border-radius:6px;">
+      Login
+    </button>
+
     <br><br>
-    <button onclick="closeLoginModal()" style="color:red;">Cancel</button>
+    <button onclick="closeLoginModal()" style="border:none; background:none; color:red;">Cancel</button>
   </div>
 </div>
 
@@ -77,7 +100,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// ✅ LOGIN MODAL
+// MODAL
 window.openLoginModal = () => {
   document.getElementById("loginModal").style.display = "flex";
 };
@@ -86,7 +109,7 @@ window.closeLoginModal = () => {
   document.getElementById("loginModal").style.display = "none";
 };
 
-// ✅ LOGIN FUNCTION
+// LOGIN
 window.loginAdmin = async function () {
   const email = document.getElementById("adminEmail").value;
   const password = document.getElementById("adminPassword").value;
@@ -100,21 +123,13 @@ window.loginAdmin = async function () {
   }
 };
 
-// ✅ NAV CONTROL (FIXED)
+// NAV CONTROL
 onAuthStateChanged(auth, (user) => {
-  const adminNav = document.getElementById("admin-nav-item");
-  const loginNav = document.getElementById("login-nav-item");
-
-  if (user) {
-    adminNav.style.display = "block";
-    loginNav.style.display = "none";
-  } else {
-    adminNav.style.display = "none";
-    loginNav.style.display = "block";
-  }
+  document.getElementById("admin-nav-item").style.display = user ? "block" : "none";
+  document.getElementById("login-nav-item").style.display = user ? "none" : "block";
 });
 
-// ✅ LOAD ACTIVITIES
+// LOAD ACTIVITIES
 onValue(ref(db, 'activities'), (snapshot) => {
   const container = document.getElementById('activity-container');
   const data = snapshot.val();
