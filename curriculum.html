@@ -31,6 +31,7 @@
         <li><a href="lab.html">Lab</a></li>
         <li><a href="curriculum.html" style="color: var(--accent-gold);">Curriculum</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li id="login-nav-item"><a href="#" onclick="adminLogin()">Admin Login</a></li>
         <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
     </ul>
 </nav>
@@ -70,9 +71,28 @@
             localStorage.setItem('isAdmin', 'true');
         }
 
-        if (localStorage.getItem('isAdmin') === 'true') {
-            const adminNavItem = document.getElementById('admin-nav-item');
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const adminNavItem = document.getElementById('admin-nav-item');
+        const loginNavItem = document.getElementById('login-nav-item');
+
+        if (isAdmin) {
             if (adminNavItem) adminNavItem.style.display = 'block';
+            if (loginNavItem) loginNavItem.style.display = 'none';
+        } else {
+            if (adminNavItem) adminNavItem.style.display = 'none';
+            if (loginNavItem) loginNavItem.style.display = 'block';
+        }
+    }
+
+    function adminLogin() {
+        const password = prompt("Enter Admin Password:");
+        const correctPassword = localStorage.getItem('adminPassword') || "admin123";
+        if (password === correctPassword) {
+            localStorage.setItem('isAdmin', 'true');
+            checkAdmin();
+            alert("Logged in successfully!");
+        } else if (password !== null) {
+            alert("Incorrect password.");
         }
     }
     window.addEventListener('load', checkAdmin);

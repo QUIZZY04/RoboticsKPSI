@@ -318,6 +318,7 @@
         <li><a href="lab.html">Lab</a></li>
         <li><a href="curriculum.html">Curriculum</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li id="login-nav-item"><a href="#" onclick="adminLogin()">Admin Login</a></li>
         <li id="admin-nav-item" style="display: none;"><a href="admin.html">Admin</a></li>
     </ul>
 </nav>
@@ -511,7 +512,14 @@
             if (act.type === 'video') {
                 // Check if it's a YouTube URL or a direct link
                 if (act.url.includes('youtube.com') || act.url.includes('youtu.be')) {
-                    const videoId = act.url.split('v=')[1] || act.url.split('/').pop();
+                    let videoId = '';
+                    if (act.url.includes('v=')) {
+                        videoId = act.url.split('v=')[1].split('&')[0];
+                    } else if (act.url.includes('youtu.be/')) {
+                        videoId = act.url.split('youtu.be/')[1].split('?')[0];
+                    } else {
+                        videoId = act.url.split('/').pop().split('?')[0];
+                    }
                     mediaHtml = `<iframe class="activity-media" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
                 } else {
                     mediaHtml = `<video src="${act.url}" class="activity-media" controls></video>`;
@@ -536,20 +544,35 @@
         if (params.get('admin_mode') === '1') {
             localStorage.setItem('isAdmin', 'true');
         }
+        
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const adminNavItem = document.getElementById('admin-nav-item');
+        const loginNavItem = document.getElementById('login-nav-item');
 
-        if (localStorage.getItem('isAdmin') === 'true') {
-            const adminNavItem = document.getElementById('admin-nav-item');
+        if (isAdmin) {
             if (adminNavItem) adminNavItem.style.display = 'block';
+            if (loginNavItem) loginNavItem.style.display = 'none';
+        } else {
+            if (adminNavItem) adminNavItem.style.display = 'none';
+            if (loginNavItem) loginNavItem.style.display = 'block';
         }
     }
 
-    // Initialize check on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        checkAdmin();
-    });
+    function adminLogin() {
+        const password = prompt("Enter Admin Password:");
+        const correctPassword = localStorage.getItem('adminPassword') || "admin123";
+        if (password === correctPassword) {
+            localStorage.setItem('isAdmin', 'true');
+            checkAdmin();
+            alert("Logged in successfully!");
+        } else if (password !== null) {
+            alert("Incorrect password.");
+        }
+    }
 
     window.addEventListener('load', () => {
         loadActivities();
+        checkAdmin();
     });
 </script>
 </body>

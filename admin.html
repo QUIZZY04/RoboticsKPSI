@@ -21,12 +21,23 @@
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: var(--primary-blue); color: white; }
         .preview-media { width: 100px; height: 60px; object-fit: cover; border-radius: 4px; }
+
+        /* Status Message Style */
+        #status-msg {
+            display: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
     <h1>Robotic Lab Admin Panel</h1>
+    <div id="status-msg"></div>
     <p>
         <a href="index.html">← Back to Website</a> | 
         <a href="#" onclick="logoutAdmin()" style="color: #f44336; text-decoration: none;">Logout Admin Mode</a>
@@ -56,6 +67,15 @@
         <button class="btn" onclick="resetForm()" style="background:#ccc;">Cancel</button>
     </div>
 
+    <div class="form-section">
+        <h2>Change Admin Password</h2>
+        <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="new-password" placeholder="Enter new password">
+        </div>
+        <button class="btn btn-edit" onclick="changePassword()">Update Password</button>
+    </div>
+
     <h2>Manage Existing Activities</h2>
     <table>
         <thead>
@@ -74,6 +94,15 @@
 
 <script>
     let activities = JSON.parse(localStorage.getItem('roboticActivities')) || [];
+
+    function showStatus(text, success = true) {
+        const msg = document.getElementById('status-msg');
+        msg.innerText = text;
+        msg.style.display = 'block';
+        msg.style.backgroundColor = success ? '#e8f5e9' : '#ffebee';
+        msg.style.color = success ? '#2e7d32' : '#c62828';
+        setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    }
 
     // Handle local file selection
     document.getElementById('file-input').addEventListener('change', function(e) {
@@ -115,22 +144,29 @@
         const editIndex = parseInt(document.getElementById('edit-index').value);
 
         if (!url || !description) {
-            alert("Please provide both media and description.");
+            showStatus("Please provide both media and description.", false);
             return;
         }
 
         const newActivity = { type, url, description };
+        const isEdit = editIndex > -1;
 
-        if (editIndex > -1) {
-            activities[editIndex] = newActivity;
-        } else {
-            activities.push(newActivity);
+        try {
+            if (isEdit) {
+                activities[editIndex] = newActivity;
+            } else {
+                activities.push(newActivity);
+            }
+
+            localStorage.setItem('roboticActivities', JSON.stringify(activities));
+            resetForm();
+            renderAdminList();
+            showStatus(isEdit ? "Activity updated successfully!" : "Activity saved successfully!");
+            window.scrollTo(0, 0);
+        } catch (e) {
+            showStatus("Error: Storage limit reached. Try using a URL link instead of a local file upload.", false);
+            window.scrollTo(0, 0);
         }
-
-        localStorage.setItem('roboticActivities', JSON.stringify(activities));
-        resetForm();
-        renderAdminList();
-        alert("Activity saved successfully!");
     }
 
     function deleteActivity(index) {
@@ -138,6 +174,7 @@
             activities.splice(index, 1);
             localStorage.setItem('roboticActivities', JSON.stringify(activities));
             renderAdminList();
+            showStatus("Activity deleted successfully!");
         }
     }
 
@@ -165,6 +202,17 @@
     function logoutAdmin() {
         localStorage.removeItem('isAdmin');
         window.location.href = 'index.html';
+    }
+
+    function changePassword() {
+        const newPass = document.getElementById('new-password').value;
+        if (!newPass) {
+            showStatus("Please enter a new password.", false);
+            return;
+        }
+        localStorage.setItem('adminPassword', newPass);
+        showStatus("Password updated successfully!");
+        document.getElementById('new-password').value = '';
     }
 
     renderAdminList();
