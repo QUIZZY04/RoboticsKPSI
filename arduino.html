@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Platform | KPSI Robotics</title>
+
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #ffcc00;
+            --light-bg: #f4f7f9;
+            --dark-text: #333;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        nav .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        nav .logo img {
+            height: 55px;
+            margin-right: 12px;
+            border-radius: 6px;
+            background: white;
+            padding: 3px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+        }
+
+        nav ul li { margin-left: 25px; }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover { color: var(--accent-gold); }
+
+        /* ARDUINO HERO */
+        .hero-mini {
+            background: linear-gradient(rgba(0,51,102,0.9), rgba(0,51,102,0.7)),
+                        url('https://images.unsplash.com/photo-1553406830-ef2513450d76?q=80&w=2000&auto=format&fit=crop') no-repeat center/cover;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero-mini h1 { font-size: 3rem; color: var(--accent-gold); margin: 0; }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        section { margin-bottom: 60px; }
+
+        h2 {
+            color: var(--primary-blue);
+            border-left: 5px solid var(--accent-gold);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        .content-flex {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .content-flex div { flex: 1; min-width: 300px; }
+
+        .content-flex img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        /* TABLE STYLES */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .spec-table th, .spec-table td { padding: 15px; border: 1px solid #ddd; text-align: left; }
+        .spec-table th { background: var(--primary-blue); color: white; }
+
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html" style="color: var(--accent-gold);">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<header class="hero-mini">
+    <h1>Exploring Arduino</h1>
+    <p>The heartbeat of modern prototyping and education</p>
+</header>
+
+<div class="container">
+    <section>
+        <h2>History of Arduino</h2>
+        <div class="content-flex">
+            <div>
+                <p>Arduino was born in 2005 at the Interaction Design Institute Ivrea in Italy. It was founded by Massimo Banzi, David Cuartielles, Tom Igoe, Gianluca Martino, and David Mellis. The project was originally a fork of the <strong>Wiring</strong> platform, created by Hernando Barragán, aiming to provide students with a low-cost, easy-to-use platform for creating interactive projects.</p>
+                <p>Named after a local bar in Ivrea where the founders frequently met, the project quickly grew from a niche student tool into a global open-source hardware movement. By making the hardware designs and software libraries public, Arduino empowered a community of millions to build everything from simple thermometers to complex satellite components.</p>
+                <p>The core philosophy of Arduino is <strong>accessibility</strong>. By abstracting away the complex registers of the microcontroller into simple functions like <code>digitalWrite()</code> and <code>analogRead()</code>, it lowered the barrier to entry for artists, designers, and hobbyists who previously found traditional embedded programming too daunting.</p>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1563206767-5b18f218e7de?q=80&w=800&auto=format&fit=crop" alt="Arduino Origins">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Development & Ecosystem</h2>
+        <p>The Arduino ecosystem consists of two main parts: the <strong>Hardware</strong> (microcontroller boards) and the <strong>Software</strong> (IDE). Students write code in a simplified version of C++, which is then "flashed" onto the board to control electronics.</p>
+        <div class="grid">
+            <div class="card"><h3>Arduino Uno</h3><p>The gold standard for beginners. Features the ATmega328P and now the powerful Uno R4 32-bit ARM processor.</p></div>
+            <div class="card"><h3>Arduino Nano</h3><p>A compact, breadboard-friendly version perfect for small-scale wearable or portable projects.</p></div>
+            <div class="card"><h3>Arduino Mega</h3><p>Designed for complex builds, offering more memory and 54 digital I/O pins for large-scale robotics.</p></div>
+        </div>
+
+        <h3 style="margin-top: 30px; color: var(--primary-blue);">The Power of Shields</h3>
+        <p>One of the most powerful aspects of the Arduino development cycle is the use of <strong>Shields</strong>. These are pre-built circuit boards that "piggyback" on top of an Arduino board to add specific functionalities without the need for complex wiring or soldering. Common shields include:</p>
+        <ul>
+            <li><strong>Motor Shields:</strong> For controlling high-current DC motors and steppers.</li>
+            <li><strong>Ethernet/WiFi Shields:</strong> Connecting your projects to the local network or the internet.</li>
+            <li><strong>Relay Shields:</strong> Allowing the Arduino to safely switch high-voltage AC appliances.</li>
+            <li><strong>LCD Shields:</strong> Adding a visual interface with buttons for user interaction.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Technical Comparison</h2>
+        <p>Choosing the right board is the first step in any successful robotics project. Here is how our most commonly used boards compare:</p>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Arduino Uno (R3)</th>
+                    <th>Arduino Nano</th>
+                    <th>Arduino Mega 2560</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Processor</td>
+                    <td>ATmega328P</td>
+                    <td>ATmega328P</td>
+                    <td>ATmega2560</td>
+                </tr>
+                <tr>
+                    <td>Digital I/O Pins</td>
+                    <td>14 (6 PWM)</td>
+                    <td>14 (6 PWM)</td>
+                    <td>54 (15 PWM)</td>
+                </tr>
+                <tr>
+                    <td>Analog Inputs</td>
+                    <td>6</td>
+                    <td>8</td>
+                    <td>16</td>
+                </tr>
+                <tr>
+                    <td>Flash Memory</td>
+                    <td>32 KB</td>
+                    <td>32 KB</td>
+                    <td>256 KB</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>The Modern Era: IoT and Beyond</h2>
+        <div class="content-flex">
+            <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=800&auto=format&fit=crop" alt="Latest Arduino Tech">
+            <div>
+                <p>Today, Arduino has moved beyond simple 8-bit controllers. The latest flagship, the <strong>Arduino Uno R4 WiFi</strong>, features a powerful 32-bit Renesas RA4M1 processor, an LED matrix, and built-in Wi-Fi/Bluetooth. This makes it a formidable tool for the Internet of Things (IoT) and edge computing.</p>
+                <p>At KPSI, we also utilize the <strong>Arduino Cloud</strong>, allowing students to monitor their sensors and control their robots from a smartphone dashboard anywhere in the world. The new <strong>Arduino IDE 2.3</strong> provides a modern coding environment with autocompletion and a real-time debugger, preparing students for professional software engineering workflows.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+    <p>&copy; 2026 KPSI Robotics Lab</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lab | KPSI Robotics</title>
+    <style>
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--light-bg); }
+        nav { background: var(--primary-blue); color: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        nav .logo { display: flex; align-items: center; font-weight: bold; }
+        nav .logo img { height: 55px; margin-right: 12px; background: white; padding: 3px; border-radius: 6px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; border-top: 4px solid var(--accent-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h3 { color: var(--primary-blue); }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html" style="color: var(--accent-gold);">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>Our Robotics Facilities</h1>
+    <div class="grid">
+        <div class="card">
+            <h3>Electronics Station</h3>
+            <p>Complete with high-end soldering stations, multimeters, and a vast array of Arduino/ESP32 modules for circuit design.</p>
+        </div>
+        <div class="card">
+            <h3>AI & Coding Zone</h3>
+            <p>Equipped with high-performance computers for running Python-based AI models and computer vision simulations.</p>
+        </div>
+        <div class="card">
+            <h3>Prototyping Area</h3>
+            <p>Featuring 3D printers and laser cutters to build custom mechanical parts for complex robotic structures.</p>
+        </div>
+    </div>
+</div>
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+    <p>&copy; 2026 KPSI Robotics Lab</p>
+</footer>
+</body>
+</html>

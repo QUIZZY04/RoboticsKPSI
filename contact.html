@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | KPSI Robotics</title>
+    <style>
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--light-bg); }
+        nav { background: var(--primary-blue); color: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { display: flex; align-items: center; font-weight: bold; }
+        nav .logo img { height: 55px; margin-right: 12px; background: white; padding: 3px; border-radius: 6px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; }
+        .container { max-width: 600px; margin: 50px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--primary-blue); }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .submit-btn { background: var(--primary-blue); color: white; border: none; padding: 15px 30px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.3s; }
+        .submit-btn:hover { background: #002244; }
+        h1 { color: var(--primary-blue); text-align: center; }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="contact.html" style="color: var(--accent-gold);">Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>Contact the Robotics Lab</h1>
+    <form action="#">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="5" placeholder="Your inquiry..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+</div>
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+    <p>&copy; 2026 KPSI Robotics Lab</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum | KPSI Robotics</title>
+    <style>
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--light-bg); }
+        nav { background: var(--primary-blue); color: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { display: flex; align-items: center; font-weight: bold; }
+        nav .logo img { height: 55px; margin-right: 12px; background: white; padding: 3px; border-radius: 6px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; }
+        .container { max-width: 900px; margin: 50px auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 15px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: var(--primary-blue); color: white; }
+        h1 { color: var(--primary-blue); text-align: center; }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html" style="color: var(--accent-gold);">Curriculum</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>Our Robotics Curriculum</h1>
+    <table>
+        <tr>
+            <th>Level</th>
+            <th>Focus</th>
+            <th>Key Learnings</th>
+        </tr>
+        <tr>
+            <td><strong>Foundation (Primary)</strong></td>
+            <td>Mechanical Basics</td>
+            <td>Levers, Gears, Simple Machines, Logic with Blocks.</td>
+        </tr>
+        <tr>
+            <td><strong>Intermediate (Middle)</strong></td>
+            <td>Electronics & Sensors</td>
+            <td>Arduino, Circuit Design, Ultrasonic/IR sensors, Python basics.</td>
+        </tr>
+        <tr>
+            <td><strong>Advanced (Secondary)</strong></td>
+            <td>AI & Robotics</td>
+            <td>Computer Vision, IoT (NodeMCU), ROS, Autonomous Navigation.</td>
+        </tr>
+    </table>
+</div>
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+    <p>&copy; 2026 KPSI Robotics Lab</p>
+</footer>
+</body>
+</html>

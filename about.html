@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | KPSI Robotics</title>
+    <style>
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; --dark-text: #333; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--light-bg); color: var(--dark-text); line-height: 1.6; }
+        nav { background: var(--primary-blue); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        nav .logo { display: flex; align-items: center; font-weight: bold; font-size: 1.1rem; }
+        nav .logo img { height: 55px; margin-right: 12px; border-radius: 6px; background: white; padding: 3px; }
+        nav ul { list-style: none; display: flex; margin: 0; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s ease; }
+        nav ul li a:hover { color: var(--accent-gold); }
+        .container { max-width: 1000px; margin: 50px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2 { color: var(--primary-blue); }
+        .mission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .pillar-card { padding: 20px; border-radius: 8px; background: var(--light-bg); border-top: 3px solid var(--accent-gold); }
+        .pillar-card h3 { color: var(--primary-blue); margin-top: 0; }
+        .highlight-box { background: var(--primary-blue); color: white; padding: 30px; border-radius: 12px; margin: 40px 0; }
+        .highlight-box h2 { color: var(--accent-gold); }
+        footer { background: #222; color: #ccc; text-align: center; padding: 40px 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><img src="images/H.jpeg" alt="Logo"> Krishna Public School International, Nava Raipur</div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" style="color: var(--accent-gold);">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1>About Our Robotics Journey</h1>
+    <p>The Robotics & AI Excellence Centre at <strong>Krishna Public School International</strong> was established to bridge the gap between classroom theory and real-world engineering. We empower students to become creators rather than just consumers of technology, fostering a generation that is ready to lead in the age of automation.</p>
+
+    <div class="mission-grid">
+        <div class="pillar-card">
+            <h3>Our Mission</h3>
+            <p>To provide a hands-on learning environment where students master the synergy of hardware and software through project-based learning.</p>
+        </div>
+        <div class="pillar-card">
+            <h3>Our Vision</h3>
+            <p>To be a regional hub of innovation that produces future engineers capable of solving global challenges using Artificial Intelligence.</p>
+        </div>
+        <div class="pillar-card">
+            <h3>Core Values</h3>
+            <p>Persistence, ethical engineering, and collaborative problem-solving are the foundations of every project built in our lab.</p>
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <h2>The KPSI Learning Philosophy</h2>
+        <p>We believe that <strong>"Failure is a Feature."</strong> In the world of robotics, the first code rarely works, and the first circuit often fails. Our curriculum encourages students to iterate, debug, and troubleshoot—skills that are essential for any successful career in the 21st century.</p>
+    </div>
+
+    <h2>Pioneering STEM Education</h2>
+    <p>Our journey began with a simple Arduino kit and a big dream. Today, the Excellence Centre houses advanced 3D printing stations, AI workstations, and professional-grade electronics benches. We focus on AI & Robotics because computational thinking and hardware literacy have become as fundamental as reading and writing. By integrating these tools into the K-12 experience, we ensure our students are not just spectators of the future, but its architects.</p>
+</div>
+<footer>
+    <p><strong>Krishna Public School International</strong></p>
+    <p>&copy; 2026 KPSI Robotics Lab</p>
+</footer>
+</body>
+</html>

@@ -58,12 +58,36 @@
         }
 
         nav ul li {
-            margin-left: 20px;
+            margin-left: 25px;
         }
 
         nav ul li a {
             color: white;
             text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 5px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--accent-gold);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-gold);
         }
 
         /* HERO */
@@ -228,15 +252,16 @@
 <nav>
     <div class="logo">
         <img src="images/H.jpeg" alt="KPSI Logo">
-        Krishna Public School International
+        Krishna Public School International, Nava Raipur
     </div>
 
     <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Lab</a></li>
-        <li><a href="#">Curriculum</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="index.html" style="color: var(--accent-gold);">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="arduino.html">Arduino</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="contact.html">Contact</a></li>
     </ul>
 </nav>
 
@@ -244,7 +269,7 @@
 <header class="hero">
     <h1>Robotics & AI Excellence</h1>
     <p>"The best way to predict the future is to invent it."</p>
-    <a href="#curriculum" class="btn">View Curriculum</a>
+    <a href="curriculum.html" class="btn">View Curriculum</a>
 </header>
 
 <div class="container">
@@ -364,7 +389,7 @@
 
     <section class="cta">
         <h2>Ready to Build the Future?</h2>
-        <a href="#" class="btn">Contact</a>
+        <a href="contact.html" class="btn">Get in Touch</a>
     </section>
 
 </div>
