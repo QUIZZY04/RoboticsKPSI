@@ -41,6 +41,7 @@
             align-items: center;
             font-weight: bold;
             font-size: 1.1rem;
+            color: var(--accent-gold);
         }
 
         nav .logo img {
@@ -225,6 +226,65 @@
         }
         .cta h2 { border: none; padding: 0; }
 
+        /* Project Guide Styles */
+        #first-project {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border-top: 6px solid var(--accent-gold);
+            box-shadow: var(--shadow);
+        }
+
+        .guide-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        #class-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            background: white;
+            color: var(--primary-blue);
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .project-header-flex {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .project-header-text { flex: 2; min-width: 300px; }
+
+        .project-header-img {
+            flex: 1;
+            min-width: 280px;
+            height: 250px;
+            background: url('https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=600&fit=crop') no-repeat center/cover;
+            border-radius: 15px;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .btn {
             background: var(--primary-blue);
             color: white;
@@ -252,7 +312,7 @@
 <nav>
     <div class="logo">
         <img src="images/H.jpeg" alt="KPSI Logo">
-        Krishna Public School International, Nava Raipur
+        Robotics & AI Excellence Centre Krishna Public School International, Nava Raipur
     </div>
 
     <ul>
@@ -273,6 +333,58 @@
 </header>
 
 <div class="container">
+
+    <section id="first-project">
+        <div class="project-header-flex">
+            <div class="project-header-text">
+                <h2>How to Make Your First Robotic Project</h2>
+                <p>Ready to start building? Follow our customized roadmap designed specifically for your expertise level. Select your class below to unlock your first mission!</p>
+                
+                <div style="margin: 25px 0;">
+                    <select id="class-select">
+                        <option value="">-- Select Your Class --</option>
+                        <option value="beginner">Class 6 - 8 (Starter)</option>
+                        <option value="intermediate">Class 9 - 10 (Explorer)</option>
+                        <option value="advanced">Class 11 - 12 (Innovator)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="project-header-img"></div>
+        </div>
+
+        <div id="beginner" class="guide-content">
+            <h3>Step-by-Step Guide for Class 6-8</h3>
+            <p><strong>Goal:</strong> Build a "Glow-in-the-Dark" automated lamp.</p>
+            <ol>
+                <li><strong>Gather Parts:</strong> You need an Arduino Uno, an LDR (Light Sensor), a 10k Resistor, and an LED.</li>
+                <li><strong>Wiring:</strong> Connect the LDR to Analog Pin A0 and the LED to Digital Pin 13.</li>
+                <li><strong>Logic:</strong> Write code to check if the light level is low. If it is, turn on the LED.</li>
+                <li><strong>Innovate:</strong> Try adding a buzzer that sounds when it gets dark!</li>
+            </ol>
+        </div>
+
+        <div id="intermediate" class="guide-content">
+            <h3>Step-by-Step Guide for Class 9-10</h3>
+            <p><strong>Goal:</strong> Build an Object Tracking Robot.</p>
+            <ol>
+                <li><strong>Base:</strong> Set up a 2-wheel drive chassis with an Arduino and an L298N Motor Driver.</li>
+                <li><strong>Sensor:</strong> Mount an Ultrasonic Sensor on a Servo motor at the front.</li>
+                <li><strong>Programming:</strong> Code the robot to scan the surroundings. If an object is detected within 20cm, move towards it.</li>
+                <li><strong>Refine:</strong> Implement PID control for smoother movement.</li>
+            </ol>
+        </div>
+
+        <div id="advanced" class="guide-content">
+            <h3>Step-by-Step Guide for Class 11-12</h3>
+            <p><strong>Goal:</strong> AI-Powered Sorting Machine.</p>
+            <ol>
+                <li><strong>Platform:</strong> Use a Raspberry Pi with a Pi Camera and a conveyor belt mechanism.</li>
+                <li><strong>Vision:</strong> Train a simple TensorFlow Lite model to recognize different colored blocks.</li>
+                <li><strong>Actuation:</strong> Use a servo-controlled arm to push objects into different bins based on the AI's prediction.</li>
+                <li><strong>Connectivity:</strong> Log the sorting data to a cloud dashboard in real-time.</li>
+            </ol>
+        </div>
+    </section>
 
     <section>
         <h2>About the Robotics Lab</h2>
@@ -393,6 +505,20 @@
     </section>
 
 </div>
+
+<script>
+    document.getElementById('class-select').addEventListener('change', function() {
+        // Hide all guides
+        const guides = document.querySelectorAll('.guide-content');
+        guides.forEach(guide => guide.style.display = 'none');
+        
+        // Show the selected guide
+        const selectedId = this.value;
+        if (selectedId) {
+            document.getElementById(selectedId).style.display = 'block';
+        }
+    });
+</script>
 
 <footer>
     <p><strong>Krishna Public School International</strong></p>
