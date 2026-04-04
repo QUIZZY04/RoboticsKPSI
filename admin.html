@@ -2,103 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel | KPSI Robotics</title>
     <style>
-        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; --white: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--light-bg); margin: 0; padding: 20px; }
-        .admin-container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1, h2 { color: var(--primary-blue); }
-        .form-section { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        :root { --primary-blue: #003366; --accent-gold: #ffcc00; --light-bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--light-bg); padding: 20px; }
+        .admin-container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .form-section { background: #fdfdfd; border: 1px solid #eee; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
         input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-add { background: var(--primary-blue); color: white; }
-        .btn-edit { background: #ff9800; color: white; margin-right: 5px; }
-        .btn-delete { background: #f44336; color: white; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-save { background: var(--primary-blue); color: white; }
+        .btn-edit { background: #007bff; color: white; margin-right: 5px; }
+        .btn-delete { background: #dc3545; color: white; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: var(--primary-blue); color: white; }
-        .preview-media { width: 100px; height: 60px; object-fit: cover; border-radius: 4px; }
-
-        /* Status Message Style */
-        #status-msg {
-            display: none;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-        }
+        .preview-media { width: 80px; height: 50px; object-fit: cover; border-radius: 4px; }
+        #status-msg { display: none; padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
-    <h1>Robotic Lab Admin Panel</h1>
+    <h1>Lab Admin Dashboard</h1>
     <div id="status-msg"></div>
-    <p>
-        <a href="index.html">← Back to Website</a> | 
-        <a href="#" onclick="logoutAdmin()" style="color: #f44336; text-decoration: none;">Logout Admin Mode</a>
-    </p>
+    <p><a href="index.html">← Back to Site</a> | <button onclick="logout()" style="color:red; background:none; border:none; cursor:pointer;">Logout</button></p>
 
     <div class="form-section">
         <h2 id="form-title">Upload New Activity</h2>
-        <input type="hidden" id="edit-index" value="-1">
+        <input type="hidden" id="edit-id" value="">
         <div class="form-group">
-            <label>Media Type</label>
-            <select id="media-type">
-                <option value="image">Image</option>
-                <option value="video">Video</option>
-            </select>
+            <label>Upload Media (Image or MP4)</label>
+            <input type="file" id="file-input" accept="image/*,video/mp4">
         </div>
         <div class="form-group">
-            <label>Media URL (Image URL or YouTube/Video Link)</label>
-            <input type="text" id="media-url" placeholder="https://example.com/image.jpg">
-            <small>Or upload local image:</small>
-            <input type="file" id="file-input" accept="image/*">
+            <label>Or Media URL</label>
+            <input type="text" id="media-url" placeholder="https://...">
         </div>
         <div class="form-group">
-            <label>Activity Description</label>
-            <textarea id="media-desc" rows="3" placeholder="Describe the lab activity..."></textarea>
+            <label>Description</label>
+            <textarea id="media-desc" rows="3"></textarea>
         </div>
-        <button class="btn btn-add" onclick="saveActivity()" id="save-btn">Upload Activity</button>
-        <button class="btn" onclick="resetForm()" style="background:#ccc;">Cancel</button>
+        <button class="btn btn-save" id="save-btn" onclick="saveActivity()">Upload Activity</button>
+        <button class="btn" onclick="resetForm()" style="background:#ddd;">Cancel</button>
     </div>
 
-    <h2>Manage Existing Activities</h2>
+    <h2>Current Activities</h2>
     <table>
-        <thead>
-            <tr>
-                <th>Preview</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="admin-activity-list">
-            <!-- Activities will be listed here -->
-        </tbody>
+        <thead><tr><th>Preview</th><th>Description</th><th>Actions</th></tr></thead>
+        <tbody id="activity-list"></tbody>
     </table>
 </div>
 
-<!-- Firebase SDKs -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-    // TODO: Replace with your project's Firebase configuration
     const firebaseConfig = {
-        apiKey: "AIzaSy...", 
-        authDomain: "roboticskpsi.firebaseapp.com",
-        databaseURL: "https://roboticskpsi-default-rtdb.firebaseio.com",
-        projectId: "roboticskpsi",
-        storageBucket: "roboticskpsi.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abcdef"
+        apiKey: "AIzaSyBMMwRCiPedXsMN9V9InvFv89OypyPiOHk",
+        authDomain: "robotic-af198.firebaseapp.com",
+        projectId: "robotic-af198",
+        databaseURL: "https://robotic-af198-default-rtdb.firebaseio.com",
+        storageBucket: "robotic-af198.appspot.com"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -106,134 +74,80 @@
     const db = getDatabase(app);
     const storage = getStorage(app);
 
-    // Check if user is authenticated with Firebase
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            performFirebaseLogin();
-        }
-    });
-
-    async function performFirebaseLogin() {
-        const email = prompt("Enter Admin Email:");
-        const password = prompt("Firebase Admin Authentication Required. Enter Admin Password:");
-        
-        if (email && password) {
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                showStatus("Firebase Authenticated Successfully!");
-            } catch (error) {
-                showStatus("Firebase Login Failed: " + error.message, false);
-                window.location.href = 'index.html';
-            }
-        } else {
-            window.location.href = 'index.html';
-        }
-    }
+    onAuthStateChanged(auth, user => { if(!user) window.location.href='index.html'; });
 
     let currentFile = null;
+    let localData = {};
+    document.getElementById('file-input').onchange = (e) => currentFile = e.target.files[0];
 
-    function showStatus(text, success = true) {
-        const msg = document.getElementById('status-msg');
-        msg.innerText = text;
-        msg.style.display = 'block';
-        msg.style.backgroundColor = success ? '#e8f5e9' : '#ffebee';
-        msg.style.color = success ? '#2e7d32' : '#c62828';
-        setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    function showMsg(t, s=true) {
+        const m = document.getElementById('status-msg');
+        m.innerText = t; m.style.display = 'block';
+        m.style.background = s ? '#d4edda' : '#f8d7da';
+        setTimeout(() => m.style.display='none', 3000);
     }
 
-    // Handle local file selection
-    document.getElementById('file-input').addEventListener('change', function(e) {
-        currentFile = e.target.files[0];
-        if (currentFile) {
-            document.getElementById('media-url').value = `Local file: ${currentFile.name}`;
-        }
-    });
-
-    function renderAdminList(data) {
-        const list = document.getElementById('admin-activity-list');
+    onValue(ref(db, 'activities'), snap => {
+        localData = snap.val() || {};
+        const list = document.getElementById('activity-list');
         list.innerHTML = '';
-        Object.keys(data).forEach((id) => {
-            const act = data[id];
-            const row = document.createElement('tr');
-            const preview = act.type === 'image' 
-                ? `<img src="${act.url}" class="preview-media">` 
-                : `<div class="preview-media" style="background:#000; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;">Video</div>`;
-            
-            row.innerHTML = `
-                <td>${preview}</td>
-                <td>${act.type}</td>
-                <td>${act.description.substring(0, 50)}...</td>
-                <td>
-                    <button class="btn btn-delete" onclick="deleteActivity('${id}')">Delete</button>
-                </td>
-            `;
-            list.appendChild(row);
+        Object.keys(localData).reverse().forEach(id => {
+            const act = localData[id];
+            list.innerHTML += `
+                <tr>
+                    <td>${act.type==='video' ? 'VIDEO' : `<img src="${act.url}" class="preview-media">`}</td>
+                    <td>${act.description.substring(0,30)}...</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editAct('${id}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteAct('${id}')">Delete</button>
+                    </td>
+                </tr>`;
         });
-    }
-
-    // Sync with Firebase Database
-    onValue(ref(db, 'activities'), (snapshot) => {
-        const data = snapshot.val() || {};
-        renderAdminList(data);
     });
 
-    window.saveActivity = async function() {
-        const type = document.getElementById('media-type').value;
+    window.saveActivity = async () => {
+        const id = document.getElementById('edit-id').value;
+        const desc = document.getElementById('media-desc').value;
         let url = document.getElementById('media-url').value;
-        const description = document.getElementById('media-desc').value;
+        let type = "image";
 
-        if (!description || (!url && !currentFile)) {
-            showStatus("Please provide both media and description.", false);
-            return;
+        if(!desc) return showMsg("Add description", false);
+
+        showMsg("Uploading...");
+        if(currentFile) {
+            type = currentFile.type.includes('video') ? 'video' : 'image';
+            const fileRef = sRef(storage, `lab/${Date.now()}_${currentFile.name}`);
+            const snap = await uploadBytes(fileRef, currentFile);
+            url = await getDownloadURL(snap.ref);
         }
 
-        try {
-            // If a local file is chosen, upload to Firebase Storage first
-            if (currentFile) {
-                showStatus("Uploading file...", true);
-                const storageRef = sRef(storage, `activities/${Date.now()}_${currentFile.name}`);
-                const snapshot = await uploadBytes(storageRef, currentFile);
-                url = await getDownloadURL(snapshot.ref);
-            }
+        const payload = { url, description: desc, type, timestamp: Date.now() };
+        if(id) await set(ref(db, `activities/${id}`), payload);
+        else await push(ref(db, 'activities'), payload);
 
-            const activitiesRef = ref(db, 'activities');
-            await push(activitiesRef, { type, url, description, timestamp: Date.now() });
+        resetForm();
+        showMsg("Success!");
+    };
 
-            resetForm();
-            showStatus("Activity saved to Cloud successfully!");
-            window.scrollTo(0, 0);
-        } catch (e) {
-            console.error(e);
-            showStatus("Error connecting to Firebase. Check console.", false);
-            window.scrollTo(0, 0);
-        }
-    }
+    window.editAct = (id) => {
+        const item = localData[id];
+        document.getElementById('edit-id').value = id;
+        document.getElementById('media-desc').value = item.description;
+        document.getElementById('media-url').value = item.url;
+        document.getElementById('form-title').innerText = "Edit Activity";
+        document.getElementById('save-btn').innerText = "Update Activity";
+    };
 
-    window.deleteActivity = async function(id) {
-        if (confirm("Are you sure you want to delete this activity?")) {
-            try {
-                await remove(ref(db, `activities/${id}`));
-                showStatus("Activity deleted from Cloud!");
-            } catch (e) {
-                showStatus("Error deleting activity.", false);
-            }
-        }
-    }
-
-    window.resetForm = function() {
-        document.getElementById('media-url').value = '';
+    window.deleteAct = async (id) => { if(confirm("Delete?")) await remove(ref(db, `activities/${id}`)); };
+    window.resetForm = () => {
+        document.getElementById('edit-id').value = '';
         document.getElementById('media-desc').value = '';
-        document.getElementById('file-input').value = '';
+        document.getElementById('media-url').value = '';
         currentFile = null;
         document.getElementById('form-title').innerText = "Upload New Activity";
         document.getElementById('save-btn').innerText = "Upload Activity";
-    }
-
-    window.logoutAdmin = function() {
-        signOut(auth);
-        window.location.href = 'index.html';
-    }
+    };
+    window.logout = () => signOut(auth);
 </script>
-
 </body>
 </html>
