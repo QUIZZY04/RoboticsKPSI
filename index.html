@@ -623,7 +623,7 @@
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-   const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyBMMwRCiPedXsMN9V9InvFv89OypyPiOHk",
   authDomain: "robotic-af198.firebaseapp.com",
   projectId: "robotic-af198",
@@ -631,14 +631,13 @@
   messagingSenderId: "129207344993",
   appId: "1:129207344993:web:f351629c66dcdd90216f20",
   measurementId: "G-V2094BCKKE",
-  databaseURL: "https://robotic-af198-default-rtdb.firebaseio.com/"
-  
+  databaseURL: "https://robotic-af198-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app);
+    const db = getDatabase(app, "https://robotic-af198-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
     function loadActivities(activitiesObj) {
         const container = document.getElementById('activity-container');
