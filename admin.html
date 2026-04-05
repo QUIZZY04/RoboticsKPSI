@@ -160,37 +160,49 @@ onAuthStateChanged(auth, (user) => {
         renderAdminList(data);
     });
 
-    window.saveActivity = async function() {
-        const type = document.getElementById('media-type').value;
-        let url = document.getElementById('media-url').value;
-        const description = document.getElementById('media-desc').value;
+   window.saveActivity = async function() {
+    console.log("🚀 START UPLOAD");
 
-        if (!description || (!url && !currentFile)) {
-            showStatus("Please provide both media and description.", false);
-            return;
-        }
+    const type = document.getElementById('media-type').value;
+    let url = document.getElementById('media-url').value;
+    const description = document.getElementById('media-desc').value;
 
-        try {
-            // If a local file is chosen, upload to Firebase Storage first
-            if (currentFile) {
-                showStatus("Uploading file...", true);
-                const storageRef = sRef(storage, `activities/${Date.now()}_${currentFile.name}`);
-                const snapshot = await uploadBytes(storageRef, currentFile);
-                url = await getDownloadURL(snapshot.ref);
-            }
+    console.log("👤 USER:", auth.currentUser);
 
-            const activitiesRef = ref(db, 'activities');
-            await push(activitiesRef, { type, url, description, timestamp: Date.now() });
-
-            resetForm();
-            showStatus("Activity saved to Cloud successfully!");
-            window.scrollTo(0, 0);
-        } catch (e) {
-            console.error(e);
-            showStatus("Error connecting to Firebase. Check console.", false);
-            window.scrollTo(0, 0);
-        }
+    if (!auth.currentUser) {
+        alert("User not ready ❌");
+        return;
     }
+
+    try {
+        if (currentFile) {
+            console.log("📤 Uploading file...");
+
+            const storageRef = sRef(storage, `activities/${Date.now()}_${currentFile.name}`);
+            const snapshot = await uploadBytes(storageRef, currentFile);
+
+            console.log("✅ Upload success");
+
+            url = await getDownloadURL(snapshot.ref);
+            console.log("🔗 Download URL:", url);
+        }
+
+        console.log("💾 Saving to database...");
+
+        const activitiesRef = ref(db, 'activities');
+        await push(activitiesRef, { type, url, description, timestamp: Date.now() });
+
+        console.log("🎉 Saved to database");
+
+        alert("Upload Successful 🎉");
+
+        resetForm();
+
+    } catch (e) {
+        console.error("❌ ERROR:", e);
+        alert("Upload failed ❌");
+    }
+}
 
     window.deleteActivity = async function(id) {
         if (confirm("Are you sure you want to delete this activity?")) {
