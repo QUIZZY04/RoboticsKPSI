@@ -267,17 +267,42 @@
         #project-guides .btn:hover { opacity: 0.9; transform: scale(1.05); }
 
         /* Lab Activity Styles */
+        #activity-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .activity-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary-blue);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
         .activity-media {
-            width: 100%;
-            height: 250px;
+            width: 380px;
+            height: 240px;
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 15px;
+            flex-shrink: 0;
         }
-        .activity-card p {
-            font-size: 0.95rem;
+        .activity-content {
+            flex: 1;
+        }
+        .activity-content p {
+            font-size: 1.05rem;
             color: var(--dark-text);
-            line-height: 1.5;
+            line-height: 1.6;
             margin: 0;
         }
 
@@ -302,6 +327,14 @@
 
         /* MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
+            .activity-card {
+                flex-direction: column-reverse;
+                gap: 15px;
+            }
+            .activity-media {
+                width: 100%;
+                height: auto;
+            }
             nav {
                 flex-direction: column;
                 padding: 15px 10px;
@@ -472,7 +505,7 @@
     <!-- School Robotic Lab Activity Section -->
     <section id="lab-activities">
         <h2>School Robotic Lab Activity</h2>
-        <div id="activity-container" class="grid">
+        <div id="activity-container">
             <!-- Activities will be loaded here via JavaScript -->
             <p>Loading recent activities...</p>
         </div>
@@ -652,7 +685,7 @@
         
         activities.forEach(act => {
             const card = document.createElement('div');
-            card.className = 'card activity-card';
+            card.className = 'activity-card';
             
             let mediaHtml = '';
             if (act.type === 'video') {
@@ -675,8 +708,10 @@
             }
 
             card.innerHTML = `
+                <div class="activity-content">
+                    <p>${act.description}</p>
+                </div>
                 ${mediaHtml}
-                <p>${act.description}</p>
             `;
             container.appendChild(card);
         });
