@@ -148,6 +148,7 @@ onAuthStateChanged(auth, (user) => {
                 <td>${act.type}</td>
                 <td>${act.description.substring(0, 50)}...</td>
                 <td>
+                    <button class="btn btn-edit" onclick="editActivity('${id}')">Edit</button>
                     <button class="btn btn-delete" onclick="deleteActivity('${id}')">Delete</button>
                 </td>
             `;
@@ -155,18 +156,22 @@ onAuthStateChanged(auth, (user) => {
         });
     }
 
+    window.currentActivitiesData = {};
+
     // Sync with Firebase Database
     onValue(ref(db, 'activities'), (snapshot) => {
         const data = snapshot.val() || {};
+        window.currentActivitiesData = data;
         renderAdminList(data);
     });
 
    window.saveActivity = async function() {
-    console.log("🚀 START UPLOAD");
+    console.log("🚀 START UPLOAD/UPDATE");
 
     const type = document.getElementById('media-type').value;
     let url = document.getElementById('media-url').value;
     const description = document.getElementById('media-desc').value;
+    const editId = document.getElementById('edit-index').value;
 
     console.log("👤 USER:", auth.currentUser);
 
@@ -188,22 +193,47 @@ onAuthStateChanged(auth, (user) => {
             console.log("🔗 Download URL:", url);
         }
 
-        console.log("💾 Saving to database...");
+        const payload = { type, url, description, timestamp: Date.now() };
 
-        const activitiesRef = ref(db, 'activities');
-        await push(activitiesRef, { type, url, description, timestamp: Date.now() });
-
-        console.log("🎉 Saved to database");
-
-        alert("Upload Successful 🎉");
+        if (editId && editId !== '-1') {
+            console.log("💾 Updating database...");
+            const oldAct = window.currentActivitiesData[editId];
+            if (oldAct && oldAct.timestamp) payload.timestamp = oldAct.timestamp;
+            
+            await set(ref(db, `activities/${editId}`), payload);
+            console.log("🎉 Updated in database");
+            alert("Update Successful 🎉");
+        } else {
+            console.log("💾 Saving to database...");
+            const activitiesRef = ref(db, 'activities');
+            await push(activitiesRef, payload);
+            console.log("🎉 Saved to database");
+            alert("Upload Successful 🎉");
+        }
 
         resetForm();
 
     } catch (e) {
         console.error("❌ ERROR:", e);
-        alert("Upload failed ❌");
+        alert("Upload/Update failed ❌");
     }
 }
+
+    window.editActivity = function(id) {
+        const act = window.currentActivitiesData[id];
+        if (!act) return;
+
+        document.getElementById('edit-index').value = id;
+        document.getElementById('media-type').value = act.type || 'image';
+        document.getElementById('media-url').value = act.url || '';
+        document.getElementById('media-desc').value = act.description || '';
+        document.getElementById('file-input').value = '';
+        currentFile = null;
+
+        document.getElementById('form-title').innerText = "Edit Activity";
+        document.getElementById('save-btn').innerText = "Update Activity";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     window.deleteActivity = async function(id) {
         if (confirm("Are you sure you want to delete this activity?")) {
@@ -217,6 +247,7 @@ onAuthStateChanged(auth, (user) => {
     }
 
     window.resetForm = function() {
+        document.getElementById('edit-index').value = '-1';
         document.getElementById('media-url').value = '';
         document.getElementById('media-desc').value = '';
         document.getElementById('file-input').value = '';
