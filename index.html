@@ -234,7 +234,7 @@
 
         /* Project Guides Section */
         #project-guides {
-            background-color: #eef2f7;
+            background-color: var(--light-bg);
             padding: 20px 0 30px 0;
             margin: 0 0 20px 0;
             width: 100%;
@@ -250,7 +250,7 @@
 
         #project-guides .card img {
             width: calc(100% + 60px);
-            margin: -30px -30px 20px -30px;
+            margin: -30px -30px 0 -30px; /* Removed bottom margin */
             height: 200px;
             object-fit: cover;
         }
@@ -274,44 +274,72 @@
 
         /* Lab Activity Styles */
         #activity-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: grid; /* Change from flex to grid */
+            grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); /* Decreased width by 20% (280px -> 224px) */
+            gap: 20px; /* Gap between grid items */
             margin-top: 15px;
-        }
-        .activity-card {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 30px;
+
+            /* These styles make the entire #activity-container the "one card" */
             background: #dcf0ff;
-            padding: 30px;
+            padding: 30px; /* Padding for the overall card */
             border-radius: 12px;
             border-top: 4px solid var(--primary-blue);
             border-left: 6px solid var(--accent-gold);
             box-shadow: var(--shadow);
-            transition: var(--transition);
+            transition: var(--transition); /* Apply transition to the container itself */
+            overflow: hidden; /* To ensure internal elements respect border-radius */
         }
-        .activity-card:hover {
+
+        #activity-container:hover { /* Hover effect for the whole container */
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
-        .activity-media {
-            width: 380px;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
+
+        /* Styles for individual activity items within the grid */
+        .activity-grid-item {
+            display: flex;
+            flex-direction: column; /* Stack media and content vertically */
+            background: var(--white); /* Each grid item can have its own background */
+            border-radius: 8px; /* Smaller border-radius for internal items */
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Lighter shadow for internal items */
+            transition: var(--transition);
         }
+
+        .activity-grid-item:hover {
+            transform: scale(1.02); /* Slight scale on hover for individual items */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .activity-media {
+            width: 100%; /* Take full width of its parent card */
+            height: 150px; /* Reverted height to a more balanced size with new width */
+            object-fit: cover;
+            border-radius: 0; /* No border-radius here, parent grid item handles it with overflow:hidden */
+            flex-shrink: 0;
+            display: block; /* Ensure it behaves as a block element to remove any inline spacing */
+            margin-bottom: 0; /* Ensure no whitespace below the media element */
+        }
+
         .activity-content {
             flex: 1;
+            padding: 0 15px 15px 15px; /* Removed top padding to eliminate whitespace below media */
         }
         .activity-content p {
-            font-size: 1.25rem;
+            font-size: 1.1rem; /* Slightly smaller font for grid items */
             color: var(--primary-blue);
             line-height: 1.6;
             margin: 0;
             font-weight: bold;
+        }
+
+        /* Adjust the initial loading message */
+        #activity-container p {
+            grid-column: 1 / -1; /* Span across all columns */
+            text-align: center;
+            padding: 20px;
+            background: none; /* Remove background from the loading message */
+            box-shadow: none;
         }
 
         .btn {
@@ -335,13 +363,14 @@
 
         /* MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
-            .activity-card {
-                flex-direction: column-reverse;
+            #activity-container { /* Single column on small screens */
+                grid-template-columns: 1fr;
                 gap: 15px;
+                padding: 20px; /* Adjust container padding for mobile */
             }
             .activity-media {
                 width: 100%;
-                height: auto;
+                height: 100px; /* Reverted height for mobile to a more balanced size with new width */
             }
             nav {
                 flex-direction: column;
@@ -368,6 +397,10 @@
             }
             #curriculum {
                 overflow-x: auto;
+            }
+            /* Adjust padding for content within each grid item for mobile */
+            .activity-content {
+                padding: 0 15px 15px 15px; /* Removed top padding for mobile as well */
             }
         }
 
@@ -557,17 +590,17 @@
         <h2>Student Project Showcase</h2>
         <div class="grid">
             <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
+                <div style="background:url('https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:0; background-size:cover;"></div>
                 <h3>Autonomous Rover</h3>
                 <p>A self-driving robot capable of navigating obstacles using ultrasonic sensors and PID control.</p>
             </div>
             <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1558444479-c84826091ec2?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
+                <div style="background:url('https://images.unsplash.com/photo-1558444479-c84826091ec2?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:0; background-size:cover;"></div>
                 <h3>Smart Greenhouse</h3>
                 <p>An IoT system that monitors soil moisture and automates watering using Arduino and NodeMCU.</p>
             </div>
             <div class="card">
-                <div style="background:url('https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:15px; background-size:cover;"></div>
+                <div style="background:url('https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=400&fit=crop'); height:180px; border-radius:8px; margin-bottom:0; background-size:cover;"></div>
                 <h3>Bionic Arm</h3>
                 <p>A 3D-printed prosthetic arm controlled by muscle sensors (EMG) and servo motors.</p>
             </div>
@@ -692,8 +725,8 @@
         const activities = Object.values(activitiesObj).sort((a, b) => b.timestamp - a.timestamp);
         
         activities.forEach(act => {
-            const card = document.createElement('div');
-            card.className = 'activity-card';
+            const gridItem = document.createElement('div');
+            gridItem.className = 'activity-grid-item';
             
             let mediaHtml = '';
             if (act.type === 'video') {
@@ -705,6 +738,7 @@
                     } else if (act.url.includes('youtu.be/')) {
                         videoId = act.url.split('youtu.be/')[1].split('?')[0];
                     } else {
+                        // Fallback for other YouTube URL formats, though the above cover most
                         videoId = act.url.split('/').pop().split('?')[0];
                     }
                     mediaHtml = `<iframe class="activity-media" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
@@ -715,13 +749,13 @@
                 mediaHtml = `<img src="${act.url}" class="activity-media" alt="Lab Activity">`;
             }
 
-            card.innerHTML = `
+            gridItem.innerHTML = `
+                ${mediaHtml}
                 <div class="activity-content">
                     <p>${act.description}</p>
                 </div>
-                ${mediaHtml}
             `;
-            container.appendChild(card);
+            container.appendChild(gridItem);
         });
     }
 
